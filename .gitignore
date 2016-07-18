@@ -91,6 +91,7 @@ ENV/
 
 # Database
 db.sqlite3
+*/migrations
 
 # requirements
 requirements.txt
