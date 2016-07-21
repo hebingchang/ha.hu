@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
+from .models import create_user
 
 from .models import newest_events
 
@@ -13,8 +14,7 @@ def index(request):
 
 def login(request):
     if request.method == 'GET':
-        form = LoginForm()
-        return render(request, 'login.html', {'form': form})
+        return render(request, 'login.html', {})
     else:
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -25,6 +25,24 @@ def login(request):
                 auth.login(request, user)
                 return redirect('/')
             else:
-                return render(request, 'login.html', {'form': form, 'password_is_wrong': True})
+                return render(request, 'login.html', {'password_is_wrong': True})
         else:
-            return render(request, 'login.html', {'form': form})
+            return render(request, 'login.html', {})
+
+
+def signup(request):
+    if request.method == 'GET':
+        return render(request, 'signup.html', {})
+    else:
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username', '')
+            email = request.POST.get('email', '')
+            password = request.POST.get('password', '')
+            user = create_user(username, email, password)
+            if user is not None:
+                return redirect('/accounts/login/')
+            else:
+                return render(request, 'signup.html', {'error': True})
+        else:
+            return render(request, 'signup.html', {})
