@@ -1,39 +1,48 @@
-<!DOCTYPE html>
-{% load bootstrap_toolkit %}
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>登录</title>
-    {% bootstrap_stylesheet_tag %}
-    {% bootstrap_stylesheet_tag "responsive" %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    {% bootstrap_javascript_tag %}
-    {% block extra_head %}{% endblock %}
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}
+  Login
+{% endblock %}
 
-{% if password_is_wrong %}
+{% block style %}
+  {{ block.super }}
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static "styles/form.css" %}">
+{% endblock %}
+
+{% block content %}
+
+  {% if password_is_wrong %}
     <div class="alert alert-error">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4>错误!</h4>用户名或密码错误
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <h4>错误!</h4>用户名或密码错误
     </div>
-{% endif %}
+  {% endif %}
 
-
-<div class="well">
+  <div class="container">
     <h1>登录</h1>
-    <p></p>
     <form class="form-horizontal" action="" method="post">
-        {% csrf_token %}
-        {{ form|as_bootstrap:"horizontal" }}
-        <p class="form-actions">
-            <input type="submit" value="登录" class="btn btn-primary">
-            <a href="/"><input type="button" value="忘记密码" class="btn btn-danger"></a>
-            <a href="/"><input type="button" value="未注册？" class="btn btn-success"></a>
-        </p>
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text" id="id_username" name="username" required="required"/>
+        <label for="id_username" class="control-label">Username</label><i class="bar"></i>
+      </div>
+      <div class="form-group">
+        <input type="password" id="id_password" name="password" required="required"/>
+        <label for="id_password" class="control-label">Password</label><i class="bar"></i>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox"/><i class="helper"></i>Remember Me
+        </label>
+      </div>
+      <div class="button-container">
+        <button type="button" class="button"><span>Submit</span></button>
+      </div>
+      <a href="/"><input type="button" value="忘记密码" class="btn btn-danger"></a>
+      <a href="/"><input type="button" value="未注册？" class="btn btn-success"></a>
     </form>
-</div>
+  </div>
 
-</body>
-</html>
+
+{% endblock %}

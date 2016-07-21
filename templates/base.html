@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  {% block style %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static "styles/material.min.css" %}">
+  {% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+
+{% block script %}
+  {% load staticfiles %}
+  <script src="{% static "scripts/material.min.js" %}"></script>
+{% endblock %}
+
+</body>
+</html>
