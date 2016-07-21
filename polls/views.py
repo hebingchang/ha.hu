@@ -1,12 +1,14 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render, redirect
 from django.contrib import auth
-from django.template.context import RequestContext
 
 from .forms import LoginForm
 
+from .models import newest_events
+
 
 def index(request):
-    return render(request, 'index.html')
+    user = request.user
+    return render(request, 'index.html', {'events': newest_events(user)})
 
 
 def login(request):
@@ -21,7 +23,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
-                return render(request, 'index.html', {})
+                return redirect('/')
             else:
                 return render(request, 'login.html', {'form': form, 'password_is_wrong': True})
         else:

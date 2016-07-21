@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class UserProfile(models.Model):
+class Profile(models.Model):
     nickname = models.CharField(max_length=30, default='', db_index=True)
     free_time = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0)
@@ -21,13 +21,13 @@ class UserProfile(models.Model):
     def followers(self):
         return list(map(lambda r: r.from_user, U2URelationship \
                         .objects.select_related('from_user') \
-                        .filter(to_user=self, relationship=0).all()))
+                        .filter(to_user=self.inner_user, relationship=0).all()))
 
     @property
     def followees(self):
         return list(map(lambda r: r.to_user, U2URelationship
                         .objects.select_related('to_user')
-                        .filter(from_user=self, relationship=0).all()))
+                        .filter(from_user=self.inner_user, relationship=0).all()))
 
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
@@ -35,7 +35,7 @@ class UserProfile(models.Model):
 
 def create_user(username, email, password, **kwargs):
     inner_user = User.objects.create_user(username, email, password)
-    user_profile = UserProfile(inner_user=inner_user, **kwargs)
+    user_profile = Profile(inner_user=inner_user, **kwargs)
     user_profile.save()
     return inner_user
 
@@ -81,7 +81,7 @@ class Vote(models.Model):
 
 
 def newest_events(user, num=10):
-    followees = user.followees
+    followees = user.profile.followees
     cnt = len(followees)
     if cnt == 0:
         return []
