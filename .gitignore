@@ -98,3 +98,6 @@ requirements.txt
 
 # graph_models
 graphs
+
+#pyCharm
+.idea
