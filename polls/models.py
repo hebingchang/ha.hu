@@ -1,7 +1,10 @@
-from django.db import models
+from django.db import models, connection
 from django.utils import timezone
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class User(models.Model):
@@ -20,11 +23,15 @@ class User(models.Model):
 
     @property
     def followers(self):
-        return U2URelationShip.objects.filter(to_user=self, relationship=0)
+        return list(map(lambda r: r.from_user, U2URelationship \
+                        .objects.select_related('from_user') \
+                        .filter(to_user=self, relationship=0).all()))
 
     @property
     def followees(self):
-        return U2URelationShip.objects.filter(from_user=self, relationship=0)
+        return list(map(lambda r: r.to_user, U2URelationship
+                        .objects.select_related('to_user')
+                        .filter(from_user=self, relationship=0).all()))
 
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
@@ -39,13 +46,6 @@ class Question(models.Model):
     class Meta:
         ordering = ('-create_time',)
 
-    @staticmethod
-    def new_question(**kwargs):
-        q = Question(**kwargs)
-        q.save()
-        News(event=q).save()
-        return q
-
 
 class Topic(models.Model):
     name = models.CharField(max_length=10, default='')
@@ -59,13 +59,6 @@ class Answer(models.Model):
     from_question = models.ForeignKey(Question, blank=True, on_delete=models.CASCADE, db_index=True)
     create_time = models.DateTimeField(default=timezone.now)
     edit_time = models.DateTimeField(default=timezone.now)
-
-    @staticmethod
-    def new_answer(**kwargs):
-        a = Answer(**kwargs)
-        a.save()
-        News(event=a).save()
-        return a
 
 
 class Comment(models.Model):
@@ -83,30 +76,57 @@ class Vote(models.Model):
     to_answer = models.ForeignKey(Answer, blank=True, on_delete=models.CASCADE, db_index=True)
     from_user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, db_index=True)
 
-    @staticmethod
-    def new_vote(**kwargs):
-        v = Vote(**kwargs)
-        v.save()
-        News(event=v).save()
-        return v
+
+def newest_events(user, num=10):
+    followees = user.followees
+    cnt = len(followees)
+    if cnt == 0:
+        return []
+    query_sign = '=' if cnt == 1 else 'in'
+    followees_id_str = ', '.join(map(lambda x: str(x.id), followees))
+
+    with connection.cursor() as c:
+        event_types = ['question', 'answer', 'vote']
+        single_query_sql_template = \
+            """
+            SELECT id, create_time, from_user_id, "{}" AS table_name
+            FROM polls_{}
+            WHERE from_user_id {} {}
+            """
+
+        union_query_sql = '\nUNION\n'.join(
+            [single_query_sql_template.format(t, t, query_sign, followees_id_str) for t in event_types])
+
+        raw_sql = union_query_sql + \
+            """
+            ORDER BY create_time
+            LIMIT {}
+            """.format(num)
+
+        print(raw_sql)
+        logger.info('raw sql', raw_sql)
+        c.execute(raw_sql)
+
+        results = c.fetchall()
+
+    events = []
+    for r in results:
+        event_id, event_type = r[0], r[-1]
+        print(event_id, event_type)
+        events.append(({'question': Question,
+                        'answer': Answer,
+                        'vote': Vote,
+                        })[event_type].objects.get(id=event_id))
+
+    return events
 
 
-class U2URelationShip(models.Model):
+class U2URelationship(models.Model):
     # TODO: CharField | Choice
     # Follow, Block
     relationship = models.IntegerField(default=0, db_index=True)
     from_user = models.ForeignKey(User, blank=True, related_name='to_user_relationship', db_index=True)
     to_user = models.ForeignKey(User, blank=True, related_name='from_user_relationship', db_index=True)
-
-
-class News(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    event = GenericForeignKey('content_type', 'object_id')
-
-    @staticmethod
-    def newest(user, num=10, page=0):
-        return News.objects.all()[:10]
 
 
 class Chat(models.Model):
