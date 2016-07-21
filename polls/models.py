@@ -1,25 +1,21 @@
 from django.db import models, connection
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
-
+from django.contrib.auth.models import User
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class User(models.Model):
+class UserProfile(models.Model):
     nickname = models.CharField(max_length=30, default='', db_index=True)
-    email = models.EmailField(blank=True, db_index=True)
-    register_time = models.DateTimeField(default=timezone.now)
     free_time = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0)
-
-    class Meta:
-        ordering = ('-register_time',)
+    inner_user = models.OneToOneField(User)
 
     def __str__(self):
-        return 'nickname: {}, email: {}, register_time: {}, question_count: {}' \
-            .format(self.nickname, self.email, self.register_time, self.question_set.count())
+        return 'nickname: {}' \
+            .format(self.nickname)
 
     @property
     def followers(self):
@@ -35,6 +31,13 @@ class User(models.Model):
 
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
+
+
+def create_user(username, email, password, **kwargs):
+    inner_user = User.objects.create_user(username, email, password)
+    user_profile = UserProfile(inner_user=inner_user, **kwargs)
+    user_profile.save()
+    return inner_user
 
 
 class Question(models.Model):
