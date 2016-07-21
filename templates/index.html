@@ -5,6 +5,9 @@
   <title>Ha.hu Θ..Θ</title>
 </head>
 <body>
-Hello World!
+{% for event in events %}
+  {{ event.0 }} {{ event.1.from_user }}
+{% endfor %}
+
 </body>
 </html>

@@ -8,8 +8,12 @@ from .models import newest_events
 
 
 def index(request):
+    if not request.user:
+        return redirect('/accounts/login/')
+
     user = request.user
-    return render(request, 'index.html', {'events': newest_events(user)})
+    events = newest_events(user)
+    return render(request, 'index.html', {'events': events})
 
 
 def login(request):
