@@ -6,7 +6,10 @@
       <nav class="mdl-navigation">
 
         {% if cur_username %}
-          <a class="mdl-navigation__link" id="current-user" href="/profile/{{ cur_username }}">{{ cur_username }}</a>
+          <a class="mdl-navigation__link" id="current-user"
+             href="/profile/{{ cur_username }}">{{ cur_username }}</a>
+        {% else %}
+          <a href="/accounts/login" class="mdl-navigation__link">Log in</a>
         {% endif %}
 
         <a class="mdl-navigation__link" href="/">Home</a>
