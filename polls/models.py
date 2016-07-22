@@ -8,6 +8,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _content_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (instance.inner_user.username, ext)
+    return 'static/avatars/' + filename
+
+
 class Profile(models.Model):
     UNKNOWN = 0
     MALE = 1
@@ -19,6 +25,7 @@ class Profile(models.Model):
     inner_user = models.OneToOneField(User)
     first_name = models.CharField(max_length=10, default='')
     last_name = models.CharField(max_length=10, default='')
+    avatar = models.ImageField(upload_to=_content_file_name, default='')
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \

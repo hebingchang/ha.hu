@@ -1,6 +1,9 @@
 body {
   background: #fff;
-  overflow: hidden;
+}
+
+.mdl-layout__container {
+  height: 90%;
 }
 
 .mdl-layout,
@@ -46,3 +49,28 @@ body {
 a {
   text-decoration: none;
 }
+
+#fileInput {
+  margin-left: 28px;
+}
+
+.mdl-button--file input {
+  cursor: pointer;
+  height: 100%;
+  right: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 300px;
+  z-index: 4;
+}
+
+.mdl-textfield--file .mdl-textfield__input {
+  box-sizing: border-box;
+  width: calc(100% - 32px);
+}
+
+.mdl-textfield--file .mdl-button--file {
+  right: 0;
+}
+

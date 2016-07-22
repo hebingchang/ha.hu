@@ -11,9 +11,9 @@
 
 {% block content %}
   {% include 'navbar.html' %}
-  <form action method="post">
+  <form action method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout  mdl-color--white-100">
+    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--white-100">
       <main class="mdl-layout__content main_content">
         <div class="form-div mdl-grid mdl-shadow--2dp">
           <div class="mdl-cell mdl-cell--12-col cell_con">
@@ -80,6 +80,17 @@
               </label>
             </div>
           </div>
+          <div class="mdl-cell mdl-cell--6-col" id="fileInput">
+            <i class="mdi mdi-24px mdi-image"></i>
+            头像：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
+              <input class="mdl-textfield__input" placeholder="File" type="text" id="uploadFile" readonly/>
+              <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                <i class="mdi mdi-attachment"></i>
+                <input type="file" id="uploadBtn" name="avatar">
+              </div>
+            </div>
+          </div>
           <div class="mdl-cell mdl-cell--12-col btn-con">
             <button type="submit"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary btn">
@@ -90,4 +101,8 @@
       </main>
     </div>
   </form>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static "scripts/settings.js" %}"></script>
 {% endblock %}

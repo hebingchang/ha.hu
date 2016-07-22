@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, JsonResponse
+from django.core.files.base import ContentFile
 
 from .forms import LoginForm, SignupForm
 from .models import create_user
@@ -130,6 +131,9 @@ def settings(request):
         cur_user.profile.last_name = request.POST.get('last_name', '')
         cur_user.profile.first_name = request.POST.get('first_name', '')
         cur_user.profile.gender = int(request.POST.get('gender', ''))
+        avatar = request.FILES.get('photo', '')
+        if avatar:
+            cur_user.profile.avatar.save(cur_user.profile.avatar.name, ContentFile(avatar.read()))
         cur_user.save()
         cur_user.profile.save()
         return redirect('/settings/')
