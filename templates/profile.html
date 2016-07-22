@@ -1,14 +1,40 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}
   Profile
 {% endblock %}
 
+{% block style %}
+  <link rel="stylesheet" href="{% static "styles/profile.css" %}">
+{% endblock %}
+
 {% block content %}
-  用户: {{ username }}
-  <br>
-  积分: {{ profile.points }}
-  <br>
-  当前登录中用户: {{ cur_username }}
+  {% include "navbar.html" %}
+
+  <div id="profile" class="flex-center">
+    <div class="mdl-card mdl-shadow--4dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">{{ username }}</h2>
+      </div>
+
+      <div class="mdl-card__media">
+        <img src="" alt="avatar" id="avatar">
+      </div>
+
+      <div class="mdl-card__supporting-text">
+        something here.
+      </div>
+
+      <div class="mdl-card__supporting-text">
+        something here.something here.something here.something here.something here.something here.something here.
+        something here.something here.something here.something here.something here.something here.something here.
+      </div>
+
+      <div class="mdl-card__actions mdl-card--border">
+        积分: {{ profile.points }}
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

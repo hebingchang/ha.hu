@@ -1,0 +1,10 @@
+#profile {
+  margin: 3%;
+}
+
+#avatar {
+  width: 128px;
+  height: 128px;
+  border: 0;
+  padding: 10px;
+}
