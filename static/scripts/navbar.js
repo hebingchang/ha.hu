@@ -1,5 +1,5 @@
 $(function () {
-  $.get('/settings/profile', function (data) {
+  $.get('/accounts/getinfo/', function (data) {
     var $is_login = $('#is_login');
     console.log(data.username, $is_login);
     if (typeof data.username !== 'undefined') {

@@ -112,12 +112,15 @@ def signup(request):
             return render(request, 'signup.html', {})
 
 
+@require_GET
+def getinfo(request):
+    return JsonResponse(dict(username=request.user.username))
+
+
 @login_required
+@require_POST
 def settings_profile(request):
-    if request.method == 'GET':
-        return JsonResponse(dict(username=request.user.username))
-    else:
-        pass
+    pass
 
 
 @login_required
