@@ -5,9 +5,9 @@
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
 
-        {% if cur_username %}
+        {% if cur_user.username %}
           <a class="mdl-navigation__link" id="current-user"
-             href="/profile/{{ cur_username }}">{{ cur_username }}</a>
+             href="/profile/{{ cur_user.username }}">{{ cur_user.username }}</a>
         {% else %}
           <a href="/accounts/login" class="mdl-navigation__link">Log in</a>
         {% endif %}
