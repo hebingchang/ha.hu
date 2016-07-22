@@ -17,33 +17,52 @@
     </script>
   {% endif %}
 
-  <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
-    <div class="mdl-layout__content">
-      <div class="mdl-card mdl-shadow--6dp">
-        <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-          <h2 class="mdl-card__title-text">Login</h2>
-        </div>
-        <form action method="post">
-          <div class="mdl-card__supporting-text">
-            {% csrf_token %}
-            <div class="mdl-textfield mdl-js-textfield">
+  <form action method="post">
+    {% csrf_token %}
+    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout  mdl-color--white-100">
+      <main class="mdl-layout__content main_content">
+        <div class="login-form-div mdl-grid mdl-shadow--2dp">
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <h3><strong>Log in</strong></h3>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="material-icons">person</i>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" id="id_username" name="username">
-              <label class="mdl-textfield__label" for="id_username">Username</label>
-            </div>
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="password" id="id_password" name="password">
-              <label class="mdl-textfield__label" for="id_password">Password</label>
+              <label class="mdl-textfield__label" for="id_username">Enter valid Username</label>
             </div>
           </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <button type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="material-icons">lock</i>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="password" id="id_password" name="password">
+              <label class="mdl-textfield__label" for="id_password">Enter Password</label>
+            </div>
+          </div>
+          <div class="mdl-cell cell_con">
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox">
+              <input type="checkbox" id="checkbox" class="mdl-checkbox__input">
+              <span class="mdl-checkbox__label">Remember Me</span>
+            </label>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col login-btn-con">
+            <button type="submit"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary btn">
               Log in
             </button>
           </div>
-        </form>
-      </div>
+          <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet links">
+            <a href="/accounts/signup/" class="mdl-button--primary">Register now !</a>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet links">
+            <a class="mdl-button--primary">Forgot password ?</a>
+          </div>
+        </div>
+      </main>
     </div>
-  </div>
+  </form>
   <canvas id="canvas"></canvas>
 
 
