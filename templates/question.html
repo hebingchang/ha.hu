@@ -10,90 +10,60 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-content">
-	<div class="qeustion-wrapper">
-		<div class="question-card mdl-card mdl-shadow--2dp">
-		  <div class="mdl-card__title">
-		    <h2 class="mdl-card__title-text">{{question.title}}</h2>
-		  </div>
-		  <div class="mdl-card__supporting-text question-content">
-		  	{{question.content}}
-		  </div>
-		  <div class="mdl-card__actions mdl-card--border">
-		    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-		      Add Answer
-		    </a>
-		  </div>
-		  <div class="mdl-card__menu">
-		    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-		      <i class="material-icons">share</i>
-		    </button>
-		  </div>
-		</div>
-	</div>
+  <div class="main-content">
+    <div class="qeustion-wrapper">
+      <div class="question-card mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">{{ question.title }}</h2>
+        </div>
+        <div class="mdl-card__supporting-text question-content">
+          {{ question.content }}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Add Answer
+          </a>
+        </div>
+        <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="mdi mdi-36px mdi-share"></i>
+          </button>
+        </div>
+      </div>
+    </div>
 
-	<div class="answers-wrapper">
-		{% for answer in question.answers %}
-			<div class="answer-card mdl-card mdl-shadow--2dp">
-			  <div class="mdl-card__title">
-			  	<div class="avatar-wrapper">
-			  		<img src="" alt="HEAD" class="avatar"/>
-			  	</div>
-			    <h2 class="mdl-card__title-text">{{answer.from_user.username}}</h2>
-			    <h2 class="mdl-card__title-text vote-num">110</h2>
-			  </div>
-			  <div class="mdl-card__supporting-text question-content">
-			  	{{answer.content}}
-			  </div>
-			  <div class="mdl-card__actions mdl-card--border">
-			    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-			      Comment
-			    </a>
-			  </div>
-			  <div class="mdl-card__menu">
-			    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-			      <i class="material-icons">share</i>
-			    </button>
-			    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-			      <i class="material-icons">thumb_up</i>
-			    </button>
-			    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-			      <i class="material-icons">thumb_down</i>
-			    </button>
-			  </div>
-			</div>
-		{% endfor %}
-<!-- 
-		<div class="answer-card mdl-card mdl-shadow--2dp">
+    <div class="answers-wrapper">
+      {% for answer in question.answers %}
+        <div class="answer-card mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <div class="avatar-wrapper">
+              <img src="" alt="HEAD" class="avatar"/>
+            </div>
+            <h2 class="mdl-card__title-text">{{ answer.from_user.username }}</h2>
+            <h2 class="mdl-card__title-text vote-num">110</h2>
+          </div>
+          <div class="mdl-card__supporting-text question-content">
+            {{ answer.content }}
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Comment
+            </a>
+          </div>
+          <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="mdi mdi-36px mdi-share"></i>
+            </button>
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="mdi mdi-36px mdi-thumb-up"></i>
+            </button>
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="mdi mdi-36px mdi-thumb-down"></i>
+            </button>
+          </div>
+        </div>
+      {% endfor %}
 
-		  <div class="mdl-card__title">
-		  	<div class="avatar-wrapper">
-		  		<img src="" alt="HEAD" class="avatar"/>
-		  	</div>
-		    <h2 class="mdl-card__title-text">This is answer 2</h2>
-		    <h2 class="mdl-card__title-text vote-num">110</h2>
-		  </div>
-		  <div class="mdl-card__supporting-text question-content">
-		  	233333333333333333333333333333333333
-		  </div>
-		  <div class="mdl-card__actions mdl-card--border">
-		    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-		      Comment
-		    </a>
-		  </div>
-		  <div class="mdl-card__menu">
-		    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-		      <i class="material-icons">share</i>
-		    </button>
-		    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-		      <i class="material-icons">thumb_up</i>
-		    </button>
-		    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-		      <i class="material-icons">thumb_down</i>
-		    </button>
-		  </div>
-		</div> -->
-
-	</div>
-</div>
+    </div>
+  </div>
 {% endblock %}
