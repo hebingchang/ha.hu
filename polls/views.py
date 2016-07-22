@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from .forms import LoginForm, SignupForm
 from .models import create_user
@@ -110,3 +110,17 @@ def signup(request):
                 return render(request, 'signup.html', {'error': True})
         else:
             return render(request, 'signup.html', {})
+
+
+@login_required
+def settings_profile(request):
+    if request.method == 'GET':
+        return JsonResponse(dict(username=request.user.username))
+    else:
+        pass
+
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
