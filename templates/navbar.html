@@ -5,7 +5,20 @@
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
 
-        <a href="/accounts/login" class="mdl-navigation__link" id="is_login">Log in</a>
+        <button id="demo-menu-lower-left"
+                class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="mdi mdi-dots-horizontal"></i>
+        </button>
+
+        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+            for="demo-menu-lower-left">
+          <li class="mdl-menu__item">New Question</li>
+          <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">XXXXXX</li>
+          <li disabled class="mdl-menu__item">XXXXXX</li>
+          <li class="mdl-menu__item"><a href="/accounts/logout/">Logout</a></li>
+        </ul>
+
+        <a href="/accounts/login/" class="mdl-navigation__link" id="is_login"></a>
 
         <a class="mdl-navigation__link" href="/">Home</a>
         <a class="mdl-navigation__link" href="/about">About</a>

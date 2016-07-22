@@ -5,6 +5,8 @@ $(function () {
     if (typeof data.username !== 'undefined') {
       $is_login.attr('href', '/profile/' + data.username + '/');
       $is_login.text(data.username);
+    } else {
+      $is_login.text('Log in');
     }
   });
 });
