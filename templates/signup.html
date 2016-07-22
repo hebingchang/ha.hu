@@ -1,11 +1,11 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}
   Signup
 {% endblock %}
 
 {% block style %}
-  {% load staticfiles %}
   <link rel="stylesheet" href="{% static "styles/signup.css" %}">
 {% endblock %}
 
@@ -61,7 +61,6 @@
 {% endblock %}
 
 {% block script %}
-  {% load staticfiles %}
   <script src="{% static "scripts/dotbackground.js" %}"></script>
   <script src="{% static "scripts/signup.js" %}"></script>
 {% endblock %}

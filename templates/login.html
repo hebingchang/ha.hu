@@ -1,11 +1,11 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}
   Login
 {% endblock %}
 
 {% block style %}
-  {% load staticfiles %}
   <link rel="stylesheet" href="{% static "styles/login.css" %}">
 {% endblock %}
 
@@ -69,7 +69,6 @@
 {% endblock %}
 
 {% block script %}
-  {% load staticfiles %}
   <script src="{% static "scripts/dotbackground.js" %}"></script>
   <script src="{% static "scripts/login.js" %}"></script>
 {% endblock %}
