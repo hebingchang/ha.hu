@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 from .forms import LoginForm, SignupForm
 from .models import create_user
@@ -9,10 +12,9 @@ from .models import create_user
 from .models import Question, Answer, Vote, newest_events
 
 
+@login_required
+@require_GET
 def index(request):
-    if not request.user:
-        return redirect('/accounts/login/')
-
     cur_user = request.user
     event_objs = newest_events(cur_user, 1000)
 
@@ -31,6 +33,7 @@ def index(request):
     return render(request, 'index.html', {'events': events})
 
 
+@require_GET
 def profile(request, username):
     if request.method == 'GET':
         cur_user = request.user
@@ -41,11 +44,36 @@ def profile(request, username):
         pass
 
 
+@require_GET
 def question(request, question_id):
     cur_user = request.user
     question = get_object_or_404(Question, id=question_id)
     return render(request, 'question.html',
                   dict(question=question, cur_user=cur_user))
+
+
+@login_required
+@require_POST
+def new_question(request):
+    cur_user = request.user
+    title = request.POST.get('title', '')
+    content = request.POST.get('content', '')
+
+    q = Question(from_user=cur_user, title=title, content=content)
+    q.save()
+
+    return redirect('/question/{}'.format(q.id))
+
+
+@login_required
+@require_POST
+def vote(request):
+    cur_user = request.user
+    to_user = get_object_or_404(User, username=request.POST.get('to_user', ''))
+
+    Vote(from_user=cur_user, to_user=to_user).save()
+
+    return HttpResponse('')
 
 
 def login(request):

@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login),
     url(r'^accounts/signup/$', views.signup),
     url(r'^profile/(?P<username>.*)/$', views.profile),
-    url(r'^questions/(?P<question_id>\d*)/$', views.question)
+    url(r'^questions/(?P<question_id>\d*)/$', views.question),
+    url(r'^questions/create/$', views.new_question),
+    url(r'^vote/create/', views.vote)
 ]
