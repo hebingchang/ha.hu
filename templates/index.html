@@ -10,28 +10,34 @@
 {% endblock %}
 
 {% block content %}
+  {% include "navbar.html" %}
 
-  {% for event in events %}
-    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
-      <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Welcome</h2>
-      </div>
-      <div class="mdl-card__supporting-text">
-        {{ event.create_time }} {{ event.from_user_nickname }}
-        {% if event.event_type == 'question' %}
-          question: {{ event.title }} {{ event.content }}
-        {% elif event.event_type == 'answer' %}
-          answer: {{ event.question_title }} {{ event.content }}
-        {% elif event.event_type == 'vote' %}
-          vote: TODO
-        {% endif %}
-      </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          View Details
-        </a>
-      </div>
-    </div>
-  {% endfor %}
+  <ul>
+    {% for event in events %}
+      <li class="mdl-list__item mdl-list__item--two-line">
+        <span class="mdl-list__item-primary-content">
+          <i class="material-icons mdl-list__item-avatar">person</i>
+          <span>
+            {{ event.from_user_nickname }}
+            {% if event.event_type == 'question' %}
+              提了一个问题：{{ event.title }}
+            {% elif event.event_type == 'answer' %}
+              回答了问题: {{ event.question_title }}
+            {% endif %}
+          </span>
+
+          <span class="mdl-list__item-sub-title">
+            {{ event.content }}
+          </span>
+        </span>
+        <span class="mdl-list__item-secondary-content">
+          <span class="mdl-list__item-secondary-info">Detail</span>
+          <a class="mdl-list__item-secondary-action" href="#">
+            <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
+          </a>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
 
 {% endblock %}
