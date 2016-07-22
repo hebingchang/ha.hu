@@ -9,16 +9,16 @@ logger = logging.getLogger(__name__)
 
 
 class Profile(models.Model):
-
     UNKNOWN = 0
     MALE = 1
     FEMALE = 2
 
-    nickname = models.CharField(max_length=30, default='', db_index=True)
     free_time = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0)
     gender = models.IntegerField(default=0)
     inner_user = models.OneToOneField(User)
+    first_name = models.CharField(max_length=10, default='')
+    last_name = models.CharField(max_length=10, default='')
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \
@@ -126,10 +126,10 @@ def newest_events(user, num=10):
             [single_query_sql_template.format(t, t, query_sign, followees_id_str) for t in event_types])
 
         raw_sql = union_query_sql + \
-            """
-            ORDER BY create_time
-            LIMIT {}
-            """.format(num)
+                  """
+                  ORDER BY create_time
+                  LIMIT {}
+                  """.format(num)
 
         logger.info('raw sql', raw_sql)
         c.execute(raw_sql)

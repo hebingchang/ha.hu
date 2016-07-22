@@ -118,9 +118,21 @@ def getinfo(request):
 
 
 @login_required
-@require_POST
-def settings_profile(request):
-    pass
+def settings(request):
+    if request.method == 'GET':
+        cur_user = request.user
+        return render(request, 'settings.html', dict(cur_user=cur_user))
+    else:
+        cur_user = request.user
+        cur_user.password = cur_user.password if request.POST.get('password', '') == '' else request.POST.get(
+            'password', '')
+        cur_user.email = request.POST.get('email', '')
+        cur_user.profile.last_name = request.POST.get('last_name', '')
+        cur_user.profile.first_name = request.POST.get('first_name', '')
+        cur_user.profile.gender = int(request.POST.get('gender', ''))
+        cur_user.save()
+        cur_user.profile.save()
+        return redirect('/settings/')
 
 
 @login_required

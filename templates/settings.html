@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+  设置
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static "styles/settings.css" %}">
+{% endblock %}
+
+{% block content %}
+  {% include 'navbar.html' %}
+  <form action method="post">
+    {% csrf_token %}
+    <div class="mdl-layout mdl-layout--fixed-header mdl-js-layout  mdl-color--white-100">
+      <main class="mdl-layout__content main_content">
+        <div class="form-div mdl-grid mdl-shadow--2dp">
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-account"></i>
+            用户名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="id_username" name="username"
+                     value="{{ cur_user.username }}" disabled>
+              <label class="mdl-textfield__label" for="id_username">用户名无法修改</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-account"></i>
+            姓：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="id_last_name" name="last_name"
+                     value="{{ cur_user.profile.last_name }}">
+              <label class="mdl-textfield__label" for="id_last_name">输入您的姓氏</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-account"></i>
+            名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="id_first_name" name="first_name"
+                     value="{{ cur_user.profile.first_name }}">
+              <label class="mdl-textfield__label" for="id_first_name">输入您的名字</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-lock"></i>
+            密码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="password" id="id_password" name="password">
+              <label class="mdl-textfield__label" for="id_password">输入新密码</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-email"></i>
+            邮箱：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="email" id="id_email" name="email" value="{{ cur_user.email }}">
+              <label class="mdl-textfield__label" for="id_email">请输入您的邮箱</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-gender-male-female"></i>
+            性别：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <label class="mdl-radio mdl-js-radio" for="id_male">
+                <input type="radio" id="id_male" name="gender" class="mdl-radio__button"
+                       {% if cur_user.profile.gender == 1 %}checked{% endif %} value="1">
+                <span class="mdl-radio__label">Male</span>
+              </label>
+              <label class="mdl-radio mdl-js-radio" for="id_female">
+                <input type="radio" id="id_female" name="gender" class="mdl-radio__button"
+                       {% if cur_user.profile.gender == 2 %}checked{% endif %} value="2">
+                <span class="mdl-radio__label">Female</span>
+              </label>
+              <label class="mdl-radio mdl-js-radio" for="id_secret">
+                <input type="radio" id="id_secret" name="gender" class="mdl-radio__button"
+                       {% if cur_user.profile.gender == 0 %}checked{% endif %} value="0">
+                <span class="mdl-radio__label">Secret</span>
+              </label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col btn-con">
+            <button type="submit"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary btn">
+              Save
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+{% endblock %}
