@@ -66,6 +66,10 @@ class Question(models.Model):
         return 'title: {}, content: {}, create_time: {}, from_username: {}' \
             .format(self.title, self.content, self.create_time, self.from_user.username)
 
+    @property
+    def answers(self):
+        return self.answer_set.all()
+
 
 class Topic(models.Model):
     name = models.CharField(max_length=10, default='')
