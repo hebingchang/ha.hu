@@ -4,6 +4,11 @@
       <span class="mdl-layout-title">Ha乎</span>
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
+
+        {% if cur_username %}
+          <a class="mdl-navigation__link" id="current-user" href="/profile/{{ cur_username }}">{{ cur_username }}</a>
+        {% endif %}
+
         <a class="mdl-navigation__link" href="/">Home</a>
         <a class="mdl-navigation__link" href="/about">About</a>
         <a class="mdl-navigation__link" href="/contact">ContactUs</a>
