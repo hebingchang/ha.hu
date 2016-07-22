@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 from .forms import LoginForm, SignupForm
 from .models import create_user
@@ -27,6 +29,13 @@ def index(request):
         events.append(e)
 
     return render(request, 'index.html', {'events': events})
+
+
+def profile(request, username):
+    cur_user = request.user
+    user = get_object_or_404(User, username=username)
+    return render(request, 'profile.html',
+                  dict(username=user.username, profile=user.profile, cur_username=cur_user.username))
 
 
 def login(request):

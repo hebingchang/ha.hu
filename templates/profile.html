@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Profile
+{% endblock %}
+
+{% block content %}
+  用户: {{ username }}
+  <br>
+  积分: {{ profile.points }}
+  <br>
+  当前登录中用户: {{ cur_username }}
+
+{% endblock %}
