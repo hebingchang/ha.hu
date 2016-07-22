@@ -4,7 +4,7 @@ from django.contrib import auth
 from .forms import LoginForm, SignupForm
 from .models import create_user
 
-from .models import newest_events
+from .models import Question, Answer, Vote, newest_events
 
 
 def index(request):
@@ -12,7 +12,20 @@ def index(request):
         return redirect('/accounts/login/')
 
     user = request.user
-    events = newest_events(user)
+    event_objs = newest_events(user, 1000)
+
+    events = []
+    for o in event_objs:
+        e = dict(create_time=o.create_time, from_user_nickname=o.from_user.username)
+        if type(o) == Question:
+            e.update(event_type='question', title=o.title, conent=o.content)
+        elif type(o) == Answer:
+            e.update(event_type='answer', content=o.content, question_title=o.from_question.title)
+        elif type(o) == Vote:
+            pass
+
+        events.append(e)
+
     return render(request, 'index.html', {'events': events})
 
 

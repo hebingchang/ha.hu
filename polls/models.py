@@ -115,10 +115,10 @@ def newest_events(user, num=10):
     events = []
     for r in results:
         event_id, event_type = r[0], r[-1]
-        events.append((event_type, ({'question': Question,
+        events.append(({'question': Question,
                         'answer': Answer,
                         'vote': Vote,
-                        })[event_type].objects.get(id=event_id)))
+                        })[event_type].objects.get(id=event_id))
 
     return events
 
