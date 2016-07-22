@@ -1,0 +1,12 @@
+.demo-card-wide.mdl-card {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+}
+
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}

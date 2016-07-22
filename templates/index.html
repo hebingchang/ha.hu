@@ -1,24 +1,15 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}
   Ha Hu Θ..Θ
 {% endblock %}
 
+{% block style %}
+  <link rel="stylesheet" href="{% static "styles/index.css" %}">
+{% endblock %}
+
 {% block content %}
-  <style>
-    .demo-card-wide.mdl-card {
-      width: 90%;
-      margin: 20px auto;
-    }
-
-    .demo-card-wide > .mdl-card__title {
-      color: #fff;
-    }
-
-    .demo-card-wide > .mdl-card__menu {
-      color: #fff;
-    }
-  </style>
 
   {% for event in events %}
     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
