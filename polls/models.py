@@ -2,20 +2,27 @@ from django.db import models, connection
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 class Profile(models.Model):
+
+    UNKNOWN = 0
+    MALE = 1
+    FEMALE = 2
+
     nickname = models.CharField(max_length=30, default='', db_index=True)
     free_time = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(default=0)
+    gender = models.IntegerField(default=0)
     inner_user = models.OneToOneField(User)
 
     def __str__(self):
-        return 'nickname: {}' \
-            .format(self.nickname)
+        return 'username: {}, nickname: {}, points: {}, gender: {}' \
+            .format(self.inner_user.username, self.nickname, self.points, self.gender)
 
     @property
     def followers(self):
@@ -32,11 +39,17 @@ class Profile(models.Model):
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
 
+    def follow(self, user):
+        if not user:
+            return False
+        U2URelationship(from_user=self, to_user=user).save()
+
 
 def create_user(username, email, password, **kwargs):
     inner_user = User.objects.create_user(username, email, password)
     user_profile = Profile(inner_user=inner_user, **kwargs)
     user_profile.save()
+    logger.info('create user', user_profile)
     return inner_user
 
 
@@ -44,10 +57,14 @@ class Question(models.Model):
     title = models.CharField(max_length=100, default='')
     content = models.TextField(default='')
     create_time = models.DateTimeField(default=timezone.now)
-    from_user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, db_index=True)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
 
     class Meta:
         ordering = ('-create_time',)
+
+    def __str__(self):
+        return 'title: {}, content: {}, create_time: {}, from_username: {}' \
+            .format(self.title, self.content, self.create_time, self.from_user.username)
 
 
 class Topic(models.Model):
@@ -106,7 +123,6 @@ def newest_events(user, num=10):
             LIMIT {}
             """.format(num)
 
-        print(raw_sql)
         logger.info('raw sql', raw_sql)
         c.execute(raw_sql)
 
