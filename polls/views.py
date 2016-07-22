@@ -143,3 +143,9 @@ def settings(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+
+def new_answer(request, question_id):
+    cur_user = request.user
+    question = get_object_or_404(Question, id=question_id)
+    return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
