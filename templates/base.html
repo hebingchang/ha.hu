@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
+  {% load staticfiles %}
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link rel="stylesheet" href="{% static "styles/material.min.css" %}">
+  <link rel="stylesheet" href="{% static "styles/base.css" %}">
   {% block style %}
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static "styles/material.min.css" %}">
-    <link rel="stylesheet" href="{% static "styles/base.css" %}">
+
   {% endblock %}
 </head>
 <body>
-{% block content %}{% endblock %}
+{% block content %}
 
-{% block script %}
-  {% load staticfiles %}
-  <script src="{% static "scripts/jquery-3.1.0.min.js" %}"></script>
-  <script src="{% static "scripts/material.min.js" %}"></script>
 {% endblock %}
 
+{% load staticfiles %}
+<script src="{% static "scripts/jquery-3.1.0.min.js" %}"></script>
+<script src="{% static "scripts/material.min.js" %}"></script>
+
+{% block script %}
+
+{% endblock %}
 </body>
 </html>
