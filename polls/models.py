@@ -80,6 +80,10 @@ class Answer(models.Model):
     create_time = models.DateTimeField(default=timezone.now)
     edit_time = models.DateTimeField(default=timezone.now)
 
+    @property
+    def vote_num(self):
+        return Vote.objects.filter(choice=0, to_answer=self).count()
+
 
 class Comment(models.Model):
     content = models.CharField(max_length=100, default='')
