@@ -13,10 +13,10 @@
   {% include "navbar.html" %}
 
   <div id="profile" class="flex-center">
-    <div class="mdl-card mdl-shadow--4dp">
+    <div class="mdl-card mdl-shadow--4dp card">
       <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">{{ user.username }}</h2>
-        <div class="mdl-card__subtitle-text">
+        <span class="mdl-card__subtitle-text">
           {% if profile.gender == 1 %}
             <i class="mdi mdi-gender-male"></i>
           {% elif profile.gender == 2 %}
@@ -24,7 +24,11 @@
           {% else %}
             <i class="mdi mdi-gender-male-female"></i>
           {% endif %}
-        </div>
+        </span>
+        &nbsp;&nbsp;&nbsp;
+        <span class="mdl-card__subtitle-text">
+          {{ profile.first_name }}&nbsp;&nbsp;{{ profile.last_name }}
+        </span>
       </div>
 
       <div class="mdl-card__media">
@@ -41,7 +45,8 @@
       </div>
 
       <div class="mdl-card__actions mdl-card--border">
-        积分: {{ profile.points }}
+        <span>积分: {{ profile.points }}</span>
+        <span id="time">注册时间: {{ user.date_joined }}</span>
       </div>
     </div>
   </div>
