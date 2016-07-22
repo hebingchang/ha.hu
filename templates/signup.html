@@ -5,36 +5,45 @@
 {% endblock %}
 
 {% block style %}
-  {{ block.super }}
   {% load staticfiles %}
   <link rel="stylesheet" href="{% static "styles/signup.css" %}">
 {% endblock %}
 
 {% block content %}
 
-  <canvas id="canvas"></canvas>
-  <div class="container">
-    <h1>Signup</h1>
-    <form class="form-horizontal" action method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <input type="text" id="id_username" name="username" required="required"/>
-        <label for="id_username" class="control-label">Username</label><i class="bar"></i>
-      </div>
-      <div class="form-group">
-        <input type="password" id="id_password" name="password" required="required"/>
-        <label for="id_password" class="control-label">Password</label><i class="bar"></i>
-      </div>
-      <div class="form-group">
-        <input type="email" id="id_email" name="email" required="required"/>
-        <label for="id_email" class="control-label">Email</label><i class="bar"></i>
-      </div>
-      <div class="button-container">
-        <button type="submit" class="button"><span>Submit</span></button>
-      </div>
-    </form>
-  </div>
 
+  <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
+    <div class="mdl-layout__content">
+      <div class="mdl-card mdl-shadow--6dp">
+        <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+          <h2 class="mdl-card__title-text">Sign up</h2>
+        </div>
+        <form action method="post">
+          <div class="mdl-card__supporting-text">
+            {% csrf_token %}
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="text" id="id_username" name="username">
+              <label class="mdl-textfield__label" for="id_username">Username</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="password" id="id_password" name="password">
+              <label class="mdl-textfield__label" for="id_password">Password</label>
+            </div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="email" id="id_email" name="email">
+              <label class="mdl-textfield__label" for="id_email">Email</label>
+            </div>
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <button type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Sign up
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <canvas id="canvas"></canvas>
 
 {% endblock %}
 
