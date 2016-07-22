@@ -13,8 +13,8 @@ def index(request):
     if not request.user:
         return redirect('/accounts/login/')
 
-    user = request.user
-    event_objs = newest_events(user, 1000)
+    cur_user = request.user
+    event_objs = newest_events(cur_user, 1000)
 
     events = []
     for o in event_objs:
@@ -36,6 +36,13 @@ def profile(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'profile.html',
                   dict(username=user.username, profile=user.profile, cur_username=cur_user.username))
+
+
+def question(request, question_id):
+    cur_user = request.user
+    question = get_object_or_404(Question, id=question_id)
+    return render(request, 'question.html',
+                  dict(question=question, cur_user=cur_user))
 
 
 def login(request):

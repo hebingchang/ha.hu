@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^accounts/login/$', views.login),
     url(r'^accounts/signup/$', views.signup),
-    url(r'^profile/(?P<username>.*)', views.profile),
+    url(r'^profile/(?P<username>.*)/$', views.profile),
+    url(r'^questions/(?P<question_id>\d*)/$', views.question)
 ]
