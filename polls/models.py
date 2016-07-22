@@ -25,7 +25,7 @@ class Profile(models.Model):
     inner_user = models.OneToOneField(User)
     first_name = models.CharField(max_length=10, default='')
     last_name = models.CharField(max_length=10, default='')
-    avatar = models.ImageField(upload_to=_content_file_name, default='')
+    avatar = models.ImageField(upload_to=_content_file_name, default='static/images/anonymous.jpg')
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \
