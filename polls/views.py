@@ -32,10 +32,13 @@ def index(request):
 
 
 def profile(request, username):
-    cur_user = request.user
-    user = get_object_or_404(User, username=username)
-    return render(request, 'profile.html',
-                  dict(username=user.username, profile=user.profile, cur_username=cur_user.username))
+    if request.method == 'GET':
+        cur_user = request.user
+        user = get_object_or_404(User, username=username)
+        return render(request, 'profile.html',
+                      dict(username=user.username, profile=user.profile, cur_username=cur_user.username))
+    else:
+        pass
 
 
 def question(request, question_id):
