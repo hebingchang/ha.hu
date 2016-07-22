@@ -99,5 +99,9 @@ requirements.txt
 # graph_models
 graphs
 
-#pyCharm
+# PyCharm
 .idea
+
+# uploads
+static/avatars/
+!static/avatars/.gitkeep
