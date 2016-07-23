@@ -19,17 +19,7 @@ def index(request):
     cur_user = request.user
     event_objs = newest_events(cur_user, 1000)
 
-    events = []
-    for o in event_objs:
-        e = dict(create_time=o.create_time, from_user_nickname=o.from_user.username)
-        if type(o) == Question:
-            e.update(event_type='question', title=o.title, content=o.content)
-        elif type(o) == Answer:
-            e.update(event_type='answer', content=o.content, question_title=o.from_question.title)
-        elif type(o) == Vote:
-            pass
-
-        events.append(e)
+    events = list(map(lambda e: (type(e).__tablename__, e), event_objs))
 
     return render(request, 'index.html', dict(cur_user=cur_user, events=events))
 

@@ -61,6 +61,8 @@ def create_user(username, email, password, **kwargs):
 
 
 class Question(models.Model):
+    __tablename__ = 'question'
+
     title = models.CharField(max_length=100, default='')
     content = models.TextField(default='')
     create_time = models.DateTimeField(default=timezone.now)
@@ -85,6 +87,8 @@ class Topic(models.Model):
 
 
 class Answer(models.Model):
+    __tablename__ = 'answer'
+
     content = models.TextField(default='')
     from_user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     from_question = models.ForeignKey(Question, blank=True, on_delete=models.CASCADE, db_index=True)
@@ -104,6 +108,8 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
+    __tablename__ = 'vote'
+
     # TODO: CharField | Choice
     # Vote up, Vote down, Thanks, Helpless
     create_time = models.DateTimeField(default=timezone.now)
