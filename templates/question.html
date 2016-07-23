@@ -22,7 +22,7 @@
           {{ question.content }}
         </div>
         <div class="mdl-card__actions mdl-card--border">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          <a href="/answers/create/{{ question.id }}/" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Add Answer
           </a>
         </div>
@@ -72,4 +72,4 @@
 
 {% block script %}
 <script src="{% static "scripts/question.js" %}"></script>
-{% endblock %}  
+{% endblock %}
