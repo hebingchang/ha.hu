@@ -145,7 +145,7 @@ def newest_events(user, num=10):
 
         raw_sql = union_query_sql + \
                   """
-                  ORDER BY create_time
+                  ORDER BY create_time DESC
                   LIMIT {}
                   """.format(num)
 

@@ -50,8 +50,6 @@ def new_question(request):
 
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
-    print(title)
-    print(content)
     q = Question(from_user=cur_user, title=title, content=content)
     q.save()
     return redirect('/questions/{}'.format(q.id))
