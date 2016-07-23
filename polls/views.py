@@ -44,16 +44,18 @@ def question(request, question_id):
 
 
 @login_required
-@require_POST
 def new_question(request):
     cur_user = request.user
+    if request.method == 'GET':
+        return render(request, 'new_question.html', dict(cur_user=cur_user))
+
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
-
+    print(title)
+    print(content)
     q = Question(from_user=cur_user, title=title, content=content)
     q.save()
-
-    return redirect('/question/{}'.format(q.id))
+    return redirect('/questions/{}'.format(q.id))
 
 
 @login_required

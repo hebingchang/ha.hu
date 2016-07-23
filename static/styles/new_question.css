@@ -1,0 +1,25 @@
+.main-content {
+	position: relative;
+	margin-left: 10%;
+	width: 80%;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.title-wrapper {
+	width: 100%;
+}
+
+.editor-wrapper {
+	width: 100%;
+
+	/*background-color: #FAFAFA*/
+}
+
+.btn-wrapper {
+	width: 100%;
+}
+
+.submit-btn {
+	width: 100%;
+}
