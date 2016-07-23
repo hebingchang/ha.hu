@@ -153,6 +153,5 @@ def new_answer(request, question_id):
         return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
     if request.method == 'POST':
         content = request.POST.get('answer-content', '')
-        print(content)
-        return redirect('/questions/'+ str(question_id) + '/')
-
+        Answer(from_question=question, from_user=cur_user, content=content).save()
+        return redirect('/questions/{}/'.format(question_id))

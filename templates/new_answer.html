@@ -1,53 +1,51 @@
 {% extends "base.html" %}
 
 {% block title %}
-   NewAnswer
+  NewAnswer
 {% endblock %}
 
 {% block style %}
- {% load staticfiles %}
+  {% load staticfiles %}
   <link rel="stylesheet" href="{% static "styles/new_answer.css" %}">
 {% endblock %}
 
 {% block content %}
-	{% include "navbar.html" %}
-	<div class="main-content">
-		<form action method="post">
-			{% csrf_token %}
-			<div class="mdl-textfield mdl-js-textfield editor-wrapper">
-	    		<!-- <textarea class="mdl-textfield__input anwser-textarea" type="text" rows="15" id="id-textarea" ></textarea> -->
-	    		<!-- <label class="mdl-textfield__label" for="id-textarea">Edit your answer</label> -->
-	    		<textarea id="id-textarea" name="answer-content"></textarea>
-	  		</div>
+  {% include "navbar.html" %}
+  <div class="main-content">
+    <form action method="post">
+      {% csrf_token %}
+      <div class="mdl-textfield mdl-js-textfield editor-wrapper">
+        <textarea id="id-textarea" name="answer-content"></textarea>
+      </div>
 
-	  		<div class="btn-wrapper">
-	            <button type="submit"
-	                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary submit-btn">
-	              Submit
-	            </button>
-          </div>
-		</form>
+      <div class="btn-wrapper">
+        <button type="submit"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary submit-btn">
+          Submit
+        </button>
+      </div>
+    </form>
 
-	</div>
-	<script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
-	<script type="text/javascript">
-	  	tinymce.init({
-		  selector: 'textarea',
-		  height: 500,
-		  theme: 'modern',
-		  plugins: [
-		    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-		    'searchreplace wordcount visualblocks visualchars code fullscreen',
-		    'insertdatetime media nonbreaking save table contextmenu directionality',
-		    'emoticons template paste textcolor colorpicker textpattern imagetools'
-		  ],
-		  toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-		  toolbar2: 'print preview media | forecolor backcolor emoticons',
-		  image_advtab: true,
-		  content_css: [
-		    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-		    '//www.tinymce.com/css/codepen.min.css'
-		  ]	
-		});
-	</script>
+  </div>
+  <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+  <script type="text/javascript">
+    tinymce.init({
+      selector: 'textarea',
+      height: 500,
+      theme: 'modern',
+      plugins: [
+        'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualblocks visualchars code fullscreen',
+        'insertdatetime media nonbreaking save table contextmenu directionality',
+        'emoticons template paste textcolor colorpicker textpattern imagetools'
+      ],
+      toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+      toolbar2: 'print preview media | forecolor backcolor emoticons',
+      image_advtab: true,
+      content_css: [
+        '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+        '//www.tinymce.com/css/codepen.min.css'
+      ]
+    });
+  </script>
 {% endblock %}
