@@ -8,16 +8,15 @@ from django.http import JsonResponse
 from django.core.files.base import ContentFile
 
 from .forms import LoginForm, SignupForm
-from .models import create_user
-
-from .models import Question, Answer, Vote, newest_events
+from . import models
+from .models import Question, Answer, Vote
 
 
 @login_required
 @require_GET
 def index(request):
     cur_user = request.user
-    event_objs = newest_events(cur_user, 1000)
+    event_objs = models.newest_events(cur_user, 1000)
 
     events = list(map(lambda e: (type(e).__tablename__, e), event_objs))
 
@@ -69,6 +68,16 @@ def vote(request):
     return JsonResponse(dict(vote_num=to_answer.vote_num))
 
 
+@login_required
+@require_POST
+def follow(request):
+    cur_user = request.user
+    to_user = get_object_or_404(User, username=request.POST.get('to_user', ''))
+    success = models.follow(cur_user, to_user)
+
+    return JsonResponse(dict(success=success))
+
+
 def login(request):
     if request.method == 'GET':
         return render(request, 'login.html', {})
@@ -96,7 +105,7 @@ def signup(request):
             username = request.POST.get('username', '')
             email = request.POST.get('email', '')
             password = request.POST.get('password', '')
-            user = create_user(username, email, password)
+            user = models.create_user(username, email, password)
             if user is not None:
                 return redirect('/accounts/login/')
             else:

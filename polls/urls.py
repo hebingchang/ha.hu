@@ -9,9 +9,10 @@ urlpatterns = [
     url(r'^profile/(?P<username>.*)/$', views.profile),
     url(r'^questions/(?P<question_id>\d*)/$', views.question),
     url(r'^questions/create/$', views.new_question),
-    url(r'^vote/create/', views.vote),
-    url(r'^settings/', views.settings),
+    url(r'^vote/create/$', views.vote),
+    url(r'^settings/$', views.settings),
     url(r'^accounts/logout/$', views.logout),
     url(r'^accounts/getinfo/$', views.getinfo),
-    url(r'^answers/create/(?P<question_id>\d*)/$', views.new_answer)
+    url(r'^answers/create/(?P<question_id>\d*)/$', views.new_answer),
+    url(r'^follow/$', views.follow)
 ]

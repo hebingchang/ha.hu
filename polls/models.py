@@ -46,11 +46,6 @@ class Profile(models.Model):
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
 
-    def follow(self, user):
-        if not user:
-            return False
-        U2URelationship(from_user=self, to_user=user).save()
-
 
 def create_user(username, email, password, **kwargs):
     inner_user = User.objects.create_user(username, email, password)
@@ -58,6 +53,14 @@ def create_user(username, email, password, **kwargs):
     user_profile.save()
     logger.info('create user', user_profile)
     return inner_user
+
+
+def follow(from_user, user):
+    if not user or from_user == user:
+        return False
+
+    _, created = U2URelationship.objects.get_or_create(from_user=from_user, to_user=user)
+    return created
 
 
 class Question(models.Model):
@@ -145,6 +148,8 @@ def newest_events(user, num=10):
                   ORDER BY create_time
                   LIMIT {}
                   """.format(num)
+
+        print(raw_sql)
 
         logger.info('raw sql', raw_sql)
         c.execute(raw_sql)

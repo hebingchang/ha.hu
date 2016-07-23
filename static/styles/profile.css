@@ -3,14 +3,19 @@
 }
 
 .card {
-  width: 1024px;
+  width: 80%;
+}
+
+.mdl-card__media {
+  background: rgb(64,79,179);
 }
 
 #avatar {
   width: 128px;
   height: 128px;
-  border: 0;
-  padding: 10px;
+  margin: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
 #time {
