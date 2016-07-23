@@ -24,7 +24,7 @@
             {% if event.0 == 'question' %}
               提了一个问题：<a href="/questions/{{ event.1.id }}">{{ event.1.title }}</a>
             {% elif event.0 == 'answer' %}
-              回答了问题: <a href="/questions/{{ event.1.from_question.title }}">{{ event.1.from_question.title }}</a>
+              回答了问题: <a href="/questions/{{ event.1.from_question.id }}">{{ event.1.from_question.title }}</a>
             {% elif event.0 == 'vote' %}
               给 {{ event.1.to_answer.from_user.username }} 的对
               <a href="/questions/{{ event.1.to_answer.from_question.id }}">
