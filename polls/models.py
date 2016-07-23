@@ -128,8 +128,8 @@ def newest_events(user, num=10):
     cnt = len(followees)
     if cnt == 0:
         return []
-    query_sign = '=' if cnt == 1 else 'in'
-    followees_id_str = ', '.join(map(lambda x: str(x.id), followees))
+    query_sign = '=' if cnt == 1 else 'IN'
+    followees_id_str = '(%s)' % ', '.join(map(lambda x: str(x.id), followees))
 
     with connection.cursor() as c:
         event_types = ['question', 'answer', 'vote']
