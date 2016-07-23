@@ -80,7 +80,7 @@ class Question(models.Model):
 
     @property
     def answers(self):
-        return self.answer_set.all()
+        return sorted(self.answer_set.all(), key=lambda x: -x.vote_num)
 
 
 class Topic(models.Model):
