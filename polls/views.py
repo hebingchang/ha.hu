@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.core.files.base import ContentFile
 
 from .forms import LoginForm, SignupForm
@@ -72,10 +72,9 @@ def vote(request):
     cur_user = request.user
 
     to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
-    print(to_answer)
-    Vote(from_user=cur_user, to_answer=to_answer).save()
+    Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
 
-    return HttpResponse('')
+    return JsonResponse(dict(vote_num=to_answer.vote_num))
 
 
 def login(request):

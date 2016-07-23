@@ -111,6 +111,8 @@ class Vote(models.Model):
     to_answer = models.ForeignKey(Answer, blank=True, on_delete=models.CASCADE, db_index=True)
     from_user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, db_index=True)
 
+    unique_together = ('to_answer', 'from_user')
+
 
 def newest_events(user, num=10):
     followees = user.profile.followees
