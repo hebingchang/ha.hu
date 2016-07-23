@@ -70,9 +70,10 @@ def new_question(request):
 @require_POST
 def vote(request):
     cur_user = request.user
-    to_user = get_object_or_404(User, username=request.POST.get('to_user', ''))
 
-    Vote(from_user=cur_user, to_user=to_user).save()
+    to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
+    print(to_answer)
+    Vote(from_user=cur_user, to_answer=to_answer).save()
 
     return HttpResponse('')
 
@@ -148,4 +149,11 @@ def logout(request):
 def new_answer(request, question_id):
     cur_user = request.user
     question = get_object_or_404(Question, id=question_id)
-    return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
+
+    if request.method == 'GET':
+        return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
+    if request.method == 'POST':
+        content = request.POST.get('answer-content', '')
+        print(content)
+        return redirect('/questions/'+ str(question_id) + '/')
+

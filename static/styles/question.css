@@ -3,6 +3,10 @@ body {
 	padding: 0;
 }
 
+.token {
+  display: none;
+}
+
 .main-content {
 	/*background-color: #FFFFFF;*/
 	padding-top: 50px;

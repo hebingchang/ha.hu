@@ -11,6 +11,7 @@
 
 {% block content %}
   {% include "navbar.html" %}
+  <div class="token">{{ csrf_token }}</div>
   <div class="main-content">
     <div class="qeustion-wrapper">
       <div class="question-card mdl-card mdl-shadow--2dp">
@@ -35,13 +36,13 @@
 
     <div class="answers-wrapper">
       {% for answer in question.answers %}
-        <div class="answer-card mdl-card mdl-shadow--2dp">
+        <div class="answer-card mdl-card mdl-shadow--2dp" data-answer-id="{{ answer.id }}">
           <div class="mdl-card__title">
             <div class="avatar-wrapper">
               <img src="" alt="HEAD" class="avatar"/>
             </div>
             <h2 class="mdl-card__title-text">{{ answer.from_user.username }}</h2>
-            <h2 class="mdl-card__title-text vote-num">110</h2>
+            <h2 class="mdl-card__title-text vote-num">{{ answer.vote_num }}</h2>
           </div>
           <div class="mdl-card__supporting-text question-content">
             {{ answer.content }}
@@ -52,13 +53,13 @@
             </a>
           </div>
           <div class="mdl-card__menu">
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect btn-share">
               <i class="mdi mdi-share"></i>
             </button>
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect btn-vote">
               <i class="mdi mdi-thumb-up"></i>
             </button>
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect btn-downvote">
               <i class="mdi mdi-thumb-down"></i>
             </button>
           </div>
@@ -68,3 +69,7 @@
     </div>
   </div>
 {% endblock %}
+
+{% block script %}
+<script src="{% static "scripts/question.js" %}"></script>
+{% endblock %}  
