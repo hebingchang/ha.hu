@@ -5,12 +5,14 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
 
 from .forms import LoginForm, SignupForm
 from . import models
 from .models import Question, Answer, Vote
 from .tasks import save_feedbacks
+from hahu.settings import CACHE_CONTENT_LENGTH
 
 
 @login_required
@@ -56,7 +58,7 @@ def new_question(request):
     save_feedbacks.delay(cur_user.profile.follower_names, [dict(
         event_type='question',
         title=title,
-        content=content,
+        content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
         create_time=q.create_time.timestamp(),
         username=cur_user.username,
         avatar=cur_user.profile.avatar.url,
