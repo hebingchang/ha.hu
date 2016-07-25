@@ -2,3 +2,4 @@ Django
 Django-extensions
 Pillow
 celery
+django-redis

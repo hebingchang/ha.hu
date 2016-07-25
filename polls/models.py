@@ -33,8 +33,14 @@ class Profile(models.Model):
 
     @property
     def followers(self):
-        return list(map(lambda r: r.from_user, U2URelationship \
-                        .objects.select_related('from_user') \
+        return list(map(lambda r: r.from_user, U2URelationship
+                        .objects.select_related('from_user')
+                        .filter(to_user=self.inner_user, relationship=0).all()))
+
+    @property
+    def follower_names(self):
+        return list(map(lambda r: r.from_user.username, U2URelationship
+                        .objects.select_related('from_user')
                         .filter(to_user=self.inner_user, relationship=0).all()))
 
     @property
@@ -165,6 +171,68 @@ def newest_events(user, num=10):
                         })[event_type].objects.get(id=event_id))
 
     return events
+
+
+def get_feeds(user, start, end):
+    if start == end:
+        return []
+
+    followees = user.profile.followees
+    cnt = len(followees)
+    if cnt == 0:
+        return []
+    query_sign = '=' if cnt == 1 else 'IN'
+    followees_id_str = '(%s)' % ', '.join(map(lambda x: str(x.id), followees))
+
+    with connection.cursor() as c:
+        event_types = ['question', 'answer', 'vote']
+        single_query_sql_template = \
+            """
+            SELECT id, create_time, from_user_id, "{}" AS table_name
+            FROM polls_{}
+            WHERE from_user_id {} {}
+            """
+
+        union_query_sql = '\nUNION\n'.join(
+            [single_query_sql_template.format(t, t, query_sign, followees_id_str) for t in event_types])
+
+        raw_sql = union_query_sql + \
+                  """
+                  ORDER BY create_time DESC
+                  LIMIT {}, {}
+                  """.format(start, end)
+
+        print(raw_sql)
+
+        logger.info('raw sql', raw_sql)
+        c.execute(raw_sql)
+
+        results = c.fetchall()
+
+    feeds = []
+
+    for r in results:
+        event_id, event_type = r[0], r[-1]
+        event = ({'question': Question,
+                  'answer': Answer,
+                  'vote': Vote,
+                  })[event_type].objects.get(id=event_id)
+
+        feed = dict(event_type=event_type,
+                    create_time=event.create_time.timestamp(),
+                    username=event.from_user.username,
+                    avatar=event.from_user.profile.avatar.url)
+
+        if event_type == 'question':
+            feed.update(title=event.title, content=event.content)
+        elif event_type == 'answer':
+            feed.update(title=event.from_question.title, content=event.content)
+        elif event_type == 'vote':
+            feed.update(title=event.to_answer.from_question.title, content=event.to_answer.content)
+
+        feeds.append(feed)
+
+    return feeds
 
 
 class U2URelationship(models.Model):

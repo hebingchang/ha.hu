@@ -14,4 +14,4 @@ app = Celery('hahu')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS, related_name='tasks')
 
-from polls.tasks import test
+from polls.tasks import save_feedbacks

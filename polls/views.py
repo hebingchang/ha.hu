@@ -10,6 +10,7 @@ from django.core.files.base import ContentFile
 from .forms import LoginForm, SignupForm
 from . import models
 from .models import Question, Answer, Vote
+from .tasks import save_feedbacks
 
 
 @login_required
@@ -52,6 +53,15 @@ def new_question(request):
     content = request.POST.get('content', '')
     q = Question(from_user=cur_user, title=title, content=content)
     q.save()
+    save_feedbacks.delay(cur_user.profile.follower_names, [dict(
+        event_type='question',
+        title=title,
+        content=content,
+        create_time=q.create_time.timestamp(),
+        username=cur_user.username,
+        avatar=cur_user.profile.avatar.url,
+    )])
+
     return redirect('/questions/{}'.format(q.id))
 
 
