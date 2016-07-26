@@ -1,3 +1,5 @@
+'use strict';
+
 $(function () {
   $.get('/accounts/getinfo/', function (data) {
     var $is_login = $('#is_login');

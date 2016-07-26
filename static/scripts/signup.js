@@ -1,3 +1,5 @@
+'use strict';
+
 $(function () {
   $(".mdl-textfield__input").blur(function () {
     $(this).prop('required', true);
