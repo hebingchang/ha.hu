@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import LoginForm, SignupForm
 from . import models
@@ -29,11 +30,13 @@ def index(request):
 def profile(request, username):
     cur_user = request.user
     user = get_object_or_404(User, username=username)
+    is_superuser = cur_user.is_superuser
     relationship = None
     if cur_user != user:
         relationship = U2URelationship.objects.filter(from_user=cur_user, to_user=user).first()
     return render(request, 'profile.html',
-                  dict(user=user, profile=user.profile, cur_user=cur_user, relationship=relationship))
+                  dict(user=user, profile=user.profile, cur_user=cur_user, relationship=relationship,
+                       is_superuser=is_superuser))
 
 
 @require_GET
@@ -173,3 +176,13 @@ def new_answer(request, question_id):
         content = request.POST.get('answer-content', '')
         Answer(from_question=question, from_user=cur_user, content=content).save()
         return redirect('/questions/{}/'.format(question_id))
+
+
+@login_required
+@staff_member_required
+def deactive_user(request):
+    user = request.POST.get('target_user', '')
+    target_user = User.objects.get(username=user)
+    target_user.is_active = not target_user.is_active
+    target_user.save()
+    return redirect('/profile/{}/'.format(user))

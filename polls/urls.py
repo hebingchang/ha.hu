@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^accounts/logout/$', views.logout),
     url(r'^accounts/getinfo/$', views.getinfo),
     url(r'^answers/create/(?P<question_id>\d*)/$', views.new_answer),
-    url(r'^follow/$', views.follow)
+    url(r'^follow/$', views.follow),
+    url(r'^accounts/deactive/$', views.deactive_user)
 ]

@@ -14,4 +14,17 @@ $(function () {
       }
     });
   });
+  $('#delete-btn').click(function () {
+    var that = this;
+    $.post('/accounts/deactive/', {
+      target_user: username,
+      csrfmiddlewaretoken: csrf_token
+    }).done(function () {
+      if ($.trim($(that).text()) == '注销用户') {
+        $(that).text('已注销');
+      } else {
+        $(that).text('注销用户');
+      }
+    });
+  })
 });

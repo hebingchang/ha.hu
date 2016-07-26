@@ -41,15 +41,25 @@
 
       <div class="mdl-card__media">
         <img src="/{{ user.profile.avatar.url }}" alt="avatar" id="avatar">
-        {% if cur_user != user and not relationship %}
+        {% if cur_user != user and not relationship and not is_superuser %}
           <button id="follow-btn"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
             关注
           </button>
-        {% elif cur_user != user and relationship %}
+        {% elif cur_user != user and relationship and not is_superuser %}
           <button id="follow-btn"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
             已关注
+          </button>
+        {% elif is_superuser and user.is_active %}
+          <button id="delete-btn"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--red">
+            注销用户
+          </button>
+        {% elif is_superuser and not user.is_active %}
+          <button id="delete-btn"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--red">
+            已注销
           </button>
         {% endif %}
       </div>
