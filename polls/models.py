@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from hahu.settings import CACHE_CONTENT_LENGTH
 
+import uuid
 import logging
 
 logger = logging.getLogger(__name__)
@@ -76,6 +77,7 @@ def follow(from_user, user):
 class Question(models.Model):
     __tablename__ = 'question'
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     title = models.CharField(max_length=100, default='')
     content = models.TextField(default='')
     create_time = models.DateTimeField(default=timezone.now)
@@ -102,6 +104,7 @@ class Topic(models.Model):
 class Answer(models.Model):
     __tablename__ = 'answer'
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     content = models.TextField(default='')
     from_user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
     from_question = models.ForeignKey(Question, blank=True, on_delete=models.CASCADE, db_index=True)
@@ -123,6 +126,7 @@ class Comment(models.Model):
 class Vote(models.Model):
     __tablename__ = 'vote'
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     # TODO: CharField | Choice
     # Vote up, Vote down, Thanks, Helpless
     create_time = models.DateTimeField(default=timezone.now)
