@@ -29,6 +29,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=10, default='')
     last_name = models.CharField(max_length=10, default='')
     avatar = models.ImageField(upload_to=_content_file_name, default='static/images/anonymous.jpg')
+    self_intro = models.CharField(max_length=150, default='此用户太懒了，并没有填写个人介绍...')
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \

@@ -150,6 +150,7 @@ def settings(request):
         cur_user.profile.last_name = request.POST.get('last_name', '')
         cur_user.profile.first_name = request.POST.get('first_name', '')
         cur_user.profile.gender = int(request.POST.get('gender', ''))
+        cur_user.profile.self_intro = request.POST.get('intro', '')
         avatar = request.FILES.get('avatar', '')
         if avatar:
             cur_user.profile.avatar.save(avatar.name, ContentFile(avatar.read()))

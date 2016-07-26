@@ -31,7 +31,7 @@
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" id="id_last_name" name="last_name"
                      value="{{ cur_user.profile.last_name }}">
-              <label class="mdl-textfield__label" for="id_last_name">输入您的姓氏</label>
+              <label class="mdl-textfield__label" for="id_last_name">输入您的姓氏...</label>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--12-col cell_con">
@@ -40,7 +40,7 @@
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" id="id_first_name" name="first_name"
                      value="{{ cur_user.profile.first_name }}">
-              <label class="mdl-textfield__label" for="id_first_name">输入您的名字</label>
+              <label class="mdl-textfield__label" for="id_first_name">输入您的名字...</label>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--12-col cell_con">
@@ -48,7 +48,7 @@
             密码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="password" id="id_password" name="password">
-              <label class="mdl-textfield__label" for="id_password">输入新密码</label>
+              <label class="mdl-textfield__label" for="id_password">输入新密码...</label>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--12-col cell_con">
@@ -56,7 +56,16 @@
             邮箱：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="email" id="id_email" name="email" value="{{ cur_user.email }}">
-              <label class="mdl-textfield__label" for="id_email">请输入您的邮箱</label>
+              <label class="mdl-textfield__label" for="id_email">请输入您的邮箱...</label>
+            </div>
+          </div>
+          <div class="mdl-cell mdl-cell--12-col cell_con">
+            <i class="mdi mdi-24px mdi-information"></i>
+            简介：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="id_intro" name="intro"
+                     value="{{ cur_user.profile.self_intro }}">
+              <label class="mdl-textfield__label" for="id_intro">请填写您的个人介绍...</label>
             </div>
           </div>
           <div class="mdl-cell mdl-cell--12-col cell_con">
