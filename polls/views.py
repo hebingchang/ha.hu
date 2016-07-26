@@ -27,13 +27,10 @@ def index(request):
 
 @require_GET
 def profile(request, username):
-    if request.method == 'GET':
-        cur_user = request.user
-        user = get_object_or_404(User, username=username)
-        return render(request, 'profile.html',
-                      dict(user=user, profile=user.profile, cur_user=cur_user))
-    else:
-        pass
+    cur_user = request.user
+    user = get_object_or_404(User, username=username)
+    return render(request, 'profile.html',
+                  dict(user=user, profile=user.profile, cur_user=cur_user))
 
 
 @require_GET
@@ -150,11 +147,13 @@ def settings(request):
 
 
 @login_required
+@require_GET
 def logout(request):
     auth.logout(request)
     return redirect('/')
 
 
+@login_required
 def new_answer(request, question_id):
     cur_user = request.user
     question = get_object_or_404(Question, id=question_id)
