@@ -186,3 +186,8 @@ def deactive_user(request):
     target_user.is_active = not target_user.is_active
     target_user.save()
     return redirect('/profile/{}/'.format(user))
+
+
+@login_required
+def chat(request):
+    return render(request, 'chat.html', {})

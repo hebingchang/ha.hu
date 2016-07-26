@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+  Chat
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static "styles/chat.css" %}">
+{% endblock %}
+
+{% block content %}
+  {% include "navbar.html" %}
+
+  <div id="message-box" class="flex-center">
+    <div class="mdl-card mdl-shadow--4dp card">
+      {% for message in messages %}
+        {% if from_to_user %}
+          <div class="bubble-box">
+            <div class="left-message bubble">
+              {{ message }}
+            </div>
+          </div>
+        {% else %}
+          <div class="bubble-box">
+            <div class="right-message bubble">
+              {{ message }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <div id="input_box">
+        <form action method="post">
+          {% csrf_token %}
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="id_message" name="message">
+            <label class="mdl-textfield__label" for="id_message">请输入消息...</label>
+          </div>
+          <button type="submit"
+                  class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+            <i class="mdi mdi-send"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+  <script src="{% static "scripts/chat.js" %}"></script>
+{% endblock %}

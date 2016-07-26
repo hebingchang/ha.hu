@@ -1,0 +1,42 @@
+#message-box {
+  margin: 3%;
+}
+
+.card {
+  position: relative;
+  width: 1024px;
+  height: 80vh;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.bubble {
+  box-sizing: border-box;
+  width: 300px;
+  padding: 15px;
+  margin: 15px 10px;
+}
+
+.left-message {
+  border-radius: 20px 20px 20px 0;
+  float: left;
+  background: #fff;
+  color: #000;
+}
+
+.right-message {
+  border-radius: 20px 20px 0 20px;
+  float: right;
+  background: #3f51b5;
+  color: #fff;
+}
+
+#input_box {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+#input_box button {
+  background: #3f51b5;
+  color: #fff;
+}
