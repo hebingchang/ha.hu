@@ -92,7 +92,10 @@ def follow(request):
 
 def login(request):
     if request.method == 'GET':
-        return render(request, 'login.html', {})
+        if request.user.is_authenticated():
+            return redirect('/')
+        else:
+            return render(request, 'login.html', {})
     else:
         form = LoginForm(request.POST)
         if form.is_valid():
