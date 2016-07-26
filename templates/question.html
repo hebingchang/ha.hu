@@ -26,7 +26,7 @@
             Add Answer
           </a>
           {% if cur_user.is_superuser %}
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="delete">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="delete_question">
               删除问题
             </a>
           {% endif %}
@@ -56,6 +56,12 @@
             <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
               Comment
             </a>
+            {% if cur_user.is_superuser %}
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect delete_answer"
+                 data-answer-id="{{ answer.id }}">
+                删除回答
+              </a>
+            {% endif %}
           </div>
           <div class="mdl-card__menu">
             <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect btn-share">

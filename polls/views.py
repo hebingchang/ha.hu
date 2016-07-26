@@ -190,6 +190,16 @@ def new_answer(request, question_id):
 
 @login_required
 @staff_member_required
+def delete_answer(request):
+    answer_id = int(request.POST.get('answer_id', ''))
+    question_id = int(request.POST.get('question_id', ''))
+    a = get_object_or_404(Answer, id=answer_id)
+    a.delete()
+    return redirect('/questions/{}/'.format(question_id))
+
+
+@login_required
+@staff_member_required
 def deactive_user(request):
     user = request.POST.get('target_user', '')
     target_user = User.objects.get(username=user)

@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^vote/create/$', views.vote),
     url(r'^settings/$', views.settings),
     url(r'^answers/create/(?P<question_id>\d*)/$', views.new_answer),
+    url(r'^answers/delete/', views.delete_answer),
     url(r'^follow/$', views.follow),
     url(r'^chat/', views.chat)
 ]

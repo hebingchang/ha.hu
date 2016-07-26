@@ -14,9 +14,18 @@ $(function () {
     });
   });
 
-  $('#delete').click(function () {
+  $('#delete_question').click(function () {
     $.post('/questions/delete/', {
       question_id: question_id,
+      csrfmiddlewaretoken: csrf_token
+    })
+  });
+
+  $('.delete_answer').click(function () {
+    var that = this;
+    $.post('/answers/delete/', {
+      question_id: question_id,
+      answer_id: $(that).attr('data-answer-id'),
       csrfmiddlewaretoken: csrf_token
     })
   })
