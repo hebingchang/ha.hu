@@ -7,7 +7,10 @@ from hahu.settings import CACHE_FEEDS_NUM
 
 
 @shared_task
-def save_feedbacks(user_ids, feeds):
+def save_feeds(user_ids, feeds):
+    if len(feeds) == 0:
+        return
+
     data = dict(((json.dumps(feed), -feed['create_time']) for feed in feeds))
 
     for user_id in user_ids:

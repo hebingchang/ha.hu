@@ -11,7 +11,7 @@ from django.core.files.base import ContentFile
 from .forms import LoginForm, SignupForm
 from . import models
 from .models import Question, Answer, Vote
-from .tasks import save_feedbacks
+from .tasks import save_feeds
 from hahu.settings import CACHE_CONTENT_LENGTH
 
 
@@ -20,7 +20,6 @@ from hahu.settings import CACHE_CONTENT_LENGTH
 def index(request):
     cur_user = request.user
     event_objs = models.newest_events(cur_user, 1000)
-
     events = list(map(lambda e: (type(e).__tablename__, e), event_objs))
 
     return render(request, 'index.html', dict(cur_user=cur_user, events=events))
@@ -55,7 +54,7 @@ def new_question(request):
     content = request.POST.get('content', '')
     q = Question(from_user=cur_user, title=title, content=content)
     q.save()
-    save_feedbacks.delay(cur_user.profile.follower_names, [dict(
+    save_feeds.delay(cur_user.profile.follower_names, [dict(
         event_type='question',
         title=title,
         content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
