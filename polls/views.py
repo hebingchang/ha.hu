@@ -84,7 +84,17 @@ def vote(request):
     cur_user = request.user
 
     to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
-    Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
+    vote, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
+
+    if created:
+        save_feeds.delay(cur_user.profile.follower_names, [dict(
+            event_type='vote',
+            title=to_answer.from_question.title,
+            content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
+            create_time=vote.create_time.timestamp(),
+            username=cur_user.username,
+            avatar=cur_user.profile.avatar.url,
+        )])
 
     return JsonResponse(dict(vote_num=to_answer.vote_num))
 
@@ -184,7 +194,18 @@ def new_answer(request, question_id):
         return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
     if request.method == 'POST':
         content = request.POST.get('answer-content', '')
-        Answer(from_question=question, from_user=cur_user, content=content).save()
+        answer = Answer(from_question=question, from_user=cur_user, content=content)
+        answer.save()
+
+        save_feeds.delay(cur_user.profile.follower_names, [dict(
+            event_type='answer',
+            title=question.title,
+            content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
+            create_time=answer.create_time.timestamp(),
+            username=cur_user.username,
+            avatar=cur_user.profile.avatar.url,
+        )])
+
         return redirect('/questions/{}/'.format(question_id))
 
 
