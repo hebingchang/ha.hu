@@ -14,3 +14,8 @@ body {
 #navbar {
   position: relative;
 }
+
+.nav-title a {
+  color: #fff;
+  text-decoration: none;
+}
