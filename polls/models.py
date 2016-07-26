@@ -1,7 +1,10 @@
 from django.db import models, connection
 from django.utils import timezone
+from django.utils.html import strip_tags
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+
+from hahu.settings import CACHE_CONTENT_LENGTH
 
 import logging
 
@@ -224,11 +227,14 @@ def get_feeds(user, start, end):
                     avatar=event.from_user.profile.avatar.url)
 
         if event_type == 'question':
-            feed.update(title=event.title, content=event.content)
+            feed.update(title=event.title,
+                        content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'answer':
-            feed.update(title=event.from_question.title, content=event.content)
+            feed.update(title=event.from_question.title,
+                        content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'vote':
-            feed.update(title=event.to_answer.from_question.title, content=event.to_answer.content)
+            feed.update(title=event.to_answer.from_question.title,
+                        content=event.to_answer.content[:CACHE_CONTENT_LENGTH])
 
         feeds.append(feed)
 
