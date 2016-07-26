@@ -1,7 +1,7 @@
 'use strict';
 
 $(function () {
-  document.getElementById("uploadBtn").onchange = function () {
-    document.getElementById("uploadFile").value = this.files[0].name;
-  };
+  $('#uploadBtn').change(function () {
+    $('#uploadFile').val(this.files[0].name);
+  });
 });
