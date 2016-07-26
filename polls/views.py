@@ -141,8 +141,8 @@ def settings(request):
         return render(request, 'settings.html', dict(cur_user=cur_user))
     else:
         cur_user = request.user
-        cur_user.password = cur_user.password if request.POST.get('password', '') == '' else request.POST.get(
-            'password', '')
+        if request.POST.get('password', '') != '':
+            cur_user.set_password(request.POST.get('password', ''))
         cur_user.email = request.POST.get('email', '')
         cur_user.profile.last_name = request.POST.get('last_name', '')
         cur_user.profile.first_name = request.POST.get('first_name', '')
