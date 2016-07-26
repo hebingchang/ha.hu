@@ -1,18 +1,17 @@
-/**
- * Created by tianyizhuang on 7/23/16.
- */
-
 'use strict';
 
-$(function() {
-  $('#follow-btn').click(function (event) {
+$(function () {
+  $('#follow-btn').click(function () {
     var that = this;
     $.post('/follow/', {
       to_user: username,
       csrfmiddlewaretoken: csrf_token
-    }).done(function(data) {
-      console.log(data);
-      $(that).text('已关注');
+    }).done(function () {
+      if ($.trim($(that).text()) == '关注') {
+        $(that).text('已关注');
+      } else {
+        $(that).text('关注');
+      }
     });
   });
 });

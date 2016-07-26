@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 
 from .forms import LoginForm, SignupForm
 from . import models
-from .models import Question, Answer, Vote
+from .models import Question, Answer, Vote, U2URelationship
 from .tasks import save_feeds
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -29,8 +29,11 @@ def index(request):
 def profile(request, username):
     cur_user = request.user
     user = get_object_or_404(User, username=username)
+    relationship = None
+    if cur_user != user:
+        relationship = U2URelationship.objects.filter(from_user=cur_user, to_user=user).first()
     return render(request, 'profile.html',
-                  dict(user=user, profile=user.profile, cur_user=cur_user))
+                  dict(user=user, profile=user.profile, cur_user=cur_user, relationship=relationship))
 
 
 @require_GET
@@ -80,6 +83,9 @@ def follow(request):
     cur_user = request.user
     to_user = get_object_or_404(User, username=request.POST.get('to_user', ''))
     success = models.follow(cur_user, to_user)
+    if not success:
+        U2URelationship.objects.get(from_user=cur_user, to_user=to_user).delete()
+        success = True
 
     return JsonResponse(dict(success=success))
 

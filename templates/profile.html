@@ -41,10 +41,15 @@
 
       <div class="mdl-card__media">
         <img src="/{{ user.profile.avatar.url }}" alt="avatar" id="avatar">
-        {% if cur_user != user %}
+        {% if cur_user != user and not relationship %}
           <button id="follow-btn"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
             关注
+          </button>
+        {% elif cur_user != user and relationship %}
+          <button id="follow-btn"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
+            已关注
           </button>
         {% endif %}
       </div>
