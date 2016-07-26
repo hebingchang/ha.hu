@@ -70,6 +70,15 @@ def new_question(request):
 
 
 @login_required
+@staff_member_required
+def delete_question(request):
+    question_id = int(request.POST.get('question_id', ''))
+    q = get_object_or_404(Question, id=question_id)
+    q.delete()
+    return redirect('/')
+
+
+@login_required
 @require_POST
 def vote(request):
     cur_user = request.user

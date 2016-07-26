@@ -1,17 +1,16 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}
   Question
 {% endblock %}
 
 {% block style %}
-  {% load staticfiles %}
   <link rel="stylesheet" href="{% static "styles/question.css" %}">
 {% endblock %}
 
 {% block content %}
   {% include "navbar.html" %}
-  <div class="token">{{ csrf_token }}</div>
   <div class="main-content">
     <div class="qeustion-wrapper">
       <div class="question-card mdl-card mdl-shadow--2dp">
@@ -22,9 +21,15 @@
           {{ question.content|safe }}
         </div>
         <div class="mdl-card__actions mdl-card--border">
-          <a href="/answers/create/{{ question.id }}/" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          <a href="/answers/create/{{ question.id }}/"
+             class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Add Answer
           </a>
+          {% if cur_user.is_superuser %}
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="delete">
+              删除问题
+            </a>
+          {% endif %}
         </div>
         <div class="mdl-card__menu">
           <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
@@ -71,5 +76,9 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static "scripts/question.js" %}"></script>
+  <script>
+    var question_id = {{ question.id }};
+    var csrf_token = '{{ csrf_token }}';
+  </script>
+  <script src="{% static "scripts/question.js" %}"></script>
 {% endblock %}
