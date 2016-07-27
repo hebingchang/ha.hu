@@ -1,9 +1,7 @@
-from django_redis import get_redis_connection
 import redis
 import json
 
-connection = get_redis_connection('default')
-redis_server = redis.Redis(connection_pool=connection.connection_pool)
+redis_server = redis.Redis(db=1)
 
 from hahu.settings import PER_PAGE_FEEDS_NUM
 
