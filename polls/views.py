@@ -18,6 +18,7 @@ from hahu.settings import CACHE_CONTENT_LENGTH
 
 from PIL import Image
 
+
 @login_required
 @require_GET
 def index(request):
@@ -49,9 +50,9 @@ def profile(request, username):
 @require_GET
 def question(request, question_id):
     cur_user = request.user
-    question = get_object_or_404(Question, id=question_id)
+    ques = get_object_or_404(Question, id=question_id)
     return render(request, 'question.html',
-                  dict(question=question, cur_user=cur_user))
+                  dict(question=ques, cur_user=cur_user))
 
 
 @login_required
@@ -63,24 +64,24 @@ def new_question(request):
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
     print(content)
-    question = Question(from_user=cur_user, title=title, content=content)
-    question.save()
+    ques = Question(from_user=cur_user, title=title, content=content)
+    ques.save()
     new_feed.delay(
         user_id=cur_user.id,
         follower_names=cur_user.profile.follower_names,
-        feed_id=str(question.id), feed=dict(
+        feed_id=str(ques.id), feed=dict(
             event_type='question',
             title=title,
-            question_id=str(question.id),
+            question_id=str(ques.id),
             content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
-            create_time=question.create_time.timestamp(),
+            create_time=ques.create_time.timestamp(),
             username=cur_user.username,
             avatar=cur_user.profile.avatar.url,
-            feed_id=str(question.id)
+            feed_id=str(ques.id)
         )
     )
 
-    return redirect('/questions/{}'.format(question.id))
+    return redirect('/questions/{}'.format(ques.id))
 
 
 @login_required
@@ -98,22 +99,22 @@ def vote(request):
     cur_user = request.user
 
     to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
-    vote, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
-    question = vote.to_answer.from_question
+    vt, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
+    ques = vt.to_answer.from_question
 
     if created:
         new_feed.delay(
             user_id=cur_user.id,
             follower_names=cur_user.profile.follower_names,
-            feed_id=str(vote.id), feed=dict(
+            feed_id=str(vt.id), feed=dict(
                 event_type='vote',
-                title=question.title,
-                question_id=str(question.id),
+                title=ques.title,
+                question_id=str(ques.id),
                 content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
-                create_time=vote.create_time.timestamp(),
+                create_time=vt.create_time.timestamp(),
                 username=cur_user.username,
                 avatar=cur_user.profile.avatar.url,
-                feed_id=str(vote.id)
+                feed_id=str(vt.id)
             )
         )
 
@@ -212,13 +213,13 @@ def logout(request):
 @login_required
 def new_answer(request, question_id):
     cur_user = request.user
-    question = get_object_or_404(Question, id=question_id)
+    ques = get_object_or_404(Question, id=question_id)
 
     if request.method == 'GET':
-        return render(request, 'new_answer.html', dict(cur_user=cur_user, question=question))
+        return render(request, 'new_answer.html', dict(cur_user=cur_user, question=ques))
     if request.method == 'POST':
         content = request.POST.get('answer-content', '')
-        answer = Answer(from_question=question, from_user=cur_user, content=content)
+        answer = Answer(from_question=ques, from_user=cur_user, content=content)
         answer.save()
 
         new_feed.delay(
@@ -226,8 +227,8 @@ def new_answer(request, question_id):
             follower_names=cur_user.profile.follower_names,
             feed_id=str(answer.id), feed=dict(
                 event_type='answer',
-                title=question.title,
-                question_id=str(question.id),
+                title=ques.title,
+                question_id=str(ques.id),
                 content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
                 create_time=answer.create_time.timestamp(),
                 username=cur_user.username,
@@ -286,12 +287,12 @@ def search(request):
 @login_required
 @require_POST
 def upload(request):
-    contentImage = ContentImage()
+    content_image = ContentImage()
     image = request.FILES.get('image', '')
     if image:
-        contentImage.img.save(image.name, ContentFile(image.read()))
-        contentImage.save()
-        abs_url = contentImage.img.url
+        content_image.img.save(image.name, ContentFile(image.read()))
+        content_image.save()
+        abs_url = content_image.img.url
 
         im = Image.open(abs_url)
         w, h = im.size
