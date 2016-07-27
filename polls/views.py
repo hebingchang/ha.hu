@@ -62,7 +62,7 @@ def new_question(request):
         feed_id=str(question.id), feed=dict(
             event_type='question',
             title=title,
-            question_id = str(question.id),
+            question_id=str(question.id),
             content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
             create_time=question.create_time.timestamp(),
             username=cur_user.username,
@@ -257,8 +257,9 @@ def chat(request):
 
 def discover(request):
     questions = Question.objects.all()
+    answers = Answer.objects.all()
     return render(request, 'discover.html',
-                  dict(questions=questions))
+                  dict(questions=questions, answers=answers))
 
 
 @login_required

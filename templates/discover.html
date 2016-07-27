@@ -12,32 +12,49 @@
 {% block content %}
   {% include "navbar.html" %}
 
-  <ul>
-    {% for question in questions %}
-      <li class="mdl-list__item mdl-list__item--three-line">
-        <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ question.from_user.username }}" class="circle">
-            <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar">
-          </a>
-          <span>
-            {{ question.from_user.username }}
-              提出了问题
-            <br>
-          <a href="#">{{ question.title }}</a>
-          </span>
-          <span class="mdl-list__item-text-body">
-              {{ question.content|safe }}
-          </span>
-        </span>
-        <span class="mdl-list__item-secondary-content">
-          <span class="mdl-list__item-secondary-info">Detail</span>
-          <a class="mdl-list__item-secondary-action" href="#">
-            <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
-          </a>
-        </span>
-      </li>
-    {% endfor %}
-  </ul>
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+      <a href="#questions-panel" class="mdl-tabs__tab is-active">Questions</a>
+      <a href="#answers-panel" class="mdl-tabs__tab">Answers</a>
+    </div>
+
+    <div class="mdl-tabs__panel is-active" id="questions-panel">
+      <ul class="mdl-list list">
+        {% for question in questions %}
+          <li class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+              <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar" class="mdl-list__item-avatar">
+              <span>{{ question.title }}</span>
+              <span class="mdl-list__item-text-body">{{ question.content|safe }}</span>
+            </span>
+            <span class="mdl-list__item-primary-content">
+              <a href="/questions/{{ question.id }}/" class="mdl-list__item-secondary-action">
+                <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
+              </a>
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="mdl-tabs__panel" id="answers-panel">
+      <ul class="mdl-list list">
+        {% for answer in answers %}
+          <li class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+              <img src="/{{ answer.from_user.profile.avatar }}" alt="Avatar" class="mdl-list__item-avatar">
+              <span>{{ answer.from_question.title }} 问题中 {{ answer.from_user.username }} 的回答</span>
+              <span class="mdl-list__item-text-body">{{ answer.content|safe }}</span>
+            </span>
+            <span class="mdl-list__item-primary-content">
+              <a href="/questions/{{ answer.from_question.id }}/" class="mdl-list__item-secondary-action">
+                <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
+              </a>
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
 {% endblock %}
 
