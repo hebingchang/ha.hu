@@ -20,7 +20,7 @@
             <img src="/{{ feed.avatar }}" alt="Avatar">
           </a>
           <span>
-            {{ feed.username }}
+            <a href="/profile/{{ feed.username }}">{{ feed.username }}</a>
             {% if feed.event_type == 'question' %}
               提出了问题
             {% elif feed.event_type == 'answer' %}
