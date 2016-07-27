@@ -276,6 +276,8 @@ def search(request):
                   dict(users=users, questions=questions, answers=answers))
 
 
+@login_required
+@require_POST
 def upload(request):
     contentImage = ContentImage()
     image = request.FILES.get('image', '')
