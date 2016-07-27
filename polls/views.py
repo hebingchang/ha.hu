@@ -233,6 +233,7 @@ def delete_answer(request):
     question_id = int(request.POST.get('question_id', ''))
     a = get_object_or_404(Answer, id=answer_id)
     a.delete()
+    cache.delete_feed(feed_id=answer_id, user_id=a.from_user.username)
     return redirect('/questions/{}/'.format(question_id))
 
 

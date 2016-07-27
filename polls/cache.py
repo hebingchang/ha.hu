@@ -18,6 +18,12 @@ def new_feed(feed_id, feed, user_id):
         redis_server.rpop(feeds_list_key)
 
 
+def delete_feed(feed_id, user_id):
+    feed_key = 'feed_' + feed_id
+    redis_server.delete(feed_key)
+    redis_server.lrem('feeds_' + user_id, feed_key)
+
+
 def update_feeds_set(user_ids, feed_ids):
     if len(user_ids) == 0 or len(feed_ids) == 0:
         return
@@ -38,7 +44,10 @@ def get_feeds(user, page_num=0):
     if len(feed_ids) == 0:
         return []
 
-    feeds_from_cache = list(map(lambda f: json.loads(f.decode('utf-8')), redis_server.mget(feed_ids)))
+    feeds_from_cache = list(
+        map(lambda f: json.loads(f.decode('utf-8')),
+            filter(lambda f: f, redis_server.mget(feed_ids))))
+
     hit_num = len(feeds_from_cache)
     feeds_from_disk = models.get_feeds(user, start + hit_num, end)
 
