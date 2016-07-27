@@ -8,6 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
 
 from .forms import LoginForm, SignupForm
 from . import models, cache
@@ -255,6 +256,7 @@ def deactive_user(request):
 def chat(request):
     return render(request, 'chat.html', {})
 
+
 def discover(request):
     questions = Question.objects.all()
     answers = Answer.objects.all()
@@ -267,10 +269,11 @@ def discover(request):
 def search(request):
     content = request.POST.get('search', '')
     users = User.objects.filter(username__icontains=content)
-    questions = Question.objects.filter(title__icontains=content).filter(content__icontains=content)
+    questions = Question.objects.filter(Q(title__icontains=content) | Q(content__icontains=content))
     answers = Answer.objects.filter(content__icontains=content)
     return render(request, 'search.html',
                   dict(users=users, questions=questions, answers=answers))
+
 
 def upload(request):
     contentImage = ContentImage()
@@ -279,5 +282,6 @@ def upload(request):
         contentImage.img.save(image.name, ContentFile(image.read()))
         contentImage.save()
         abs_url = '/' + contentImage.img.url
-        return HttpResponse("<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)
-
+        return HttpResponse(
+            "<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox')"
+            ".val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)

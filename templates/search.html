@@ -12,74 +12,88 @@
 {% block content %}
   {% include "navbar.html" %}
 
-  <ul>
-    {% for user in users %}
-      <li class="mdl-list__item mdl-list__item--three-line">
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+      <a href="#users-panel" class="mdl-tabs__tab is-active">Users</a>
+      <a href="#questions-panel" class="mdl-tabs__tab">Questions</a>
+      <a href="#answers-panel" class="mdl-tabs__tab">Answers</a>
+    </div>
+
+    <div class="mdl-tabs__panel is-active" id="users-panel">
+      <ul class="mdl-list list">
+        {% for user in users %}
+          <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ user.username }}" class="circle">
+          <a href="/profile/{{ user.username }}/" class="circle">
             <img src="/{{ user.profile.avatar }}" alt="Avatar">
           </a>
           <span>
             {{ user.username }}
           </span>
         </span>
-      </li>
-    {% endfor %}
-  </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-  <ul>
-    {% for question in questions %}
-      <li class="mdl-list__item mdl-list__item--three-line">
+    <div class="mdl-tabs__panel" id="questions-panel">
+      <ul class="mdl-list list">
+        {% for question in questions %}
+          <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ question.from_user.username }}" class="circle">
+          <a href="/profile/{{ question.from_user.username }}/" class="circle">
             <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar">
           </a>
           <span>
             {{ question.from_user.username }}
               提出了问题
             <br>
-          <a href="#">{{ question.title }}</a>
+          <a href="/questions/{{ question.id }}/">{{ question.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
               {{ question.content|safe }}
           </span>
         </span>
-        <span class="mdl-list__item-secondary-content">
+            <span class="mdl-list__item-secondary-content">
           <span class="mdl-list__item-secondary-info">Detail</span>
-          <a class="mdl-list__item-secondary-action" href="#">
+          <a class="mdl-list__item-secondary-action" href="/questions/{{ question.id }}/">
             <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
           </a>
         </span>
-      </li>
-    {% endfor %}
-  </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-  <ul>
-    {% for answer in answers %}
-      <li class="mdl-list__item mdl-list__item--three-line">
+    <div class="mdl-tabs__panel" id="answers-panel">
+      <ul class="mdl-list list">
+        {% for answer in answers %}
+          <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ answer.from_user.username }}" class="circle">
+          <a href="/profile/{{ answer.from_user.username }}/" class="circle">
             <img src="/{{ answer.from_user.profile.avatar }}" alt="Avatar">
           </a>
           <span>
             {{ answer.from_user.username }}
               回答了问题
             <br>
-          <a href="#">{{ answer.from_question.title }}</a>
+          <a href="/questions/{{ answer.from_question.id }}/">{{ answer.from_question.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
               {{ answer.content|safe }}
           </span>
         </span>
-        <span class="mdl-list__item-secondary-content">
+            <span class="mdl-list__item-secondary-content">
           <span class="mdl-list__item-secondary-info">Detail</span>
-          <a class="mdl-list__item-secondary-action" href="#">
+          <a class="mdl-list__item-secondary-action" href="/questions/{{ answer.from_question.id }}/">
             <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
           </a>
         </span>
-      </li>
-    {% endfor %}
-  </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 
 {% endblock %}
 
