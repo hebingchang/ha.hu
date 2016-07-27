@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^chat/', views.chat),
     url(r'^accounts/logout/$', views.logout),
     url(r'^follow/$', views.follow),
-    url(r'^discover/$', views.discover)
+    url(r'^discover/$', views.discover),
+    url(r'^search/$', views.search)
 ]

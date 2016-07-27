@@ -251,3 +251,14 @@ def discover(request):
     questions = Question.objects.all()
     return render(request, 'discover.html',
                   dict(questions=questions))
+
+
+@login_required
+@require_POST
+def search(request):
+    content = request.POST.get('search', '')
+    users = User.objects.filter(username__icontains=content)
+    questions = Question.objects.filter(title__icontains=content).filter(content__icontains=content)
+    answers = Answer.objects.filter(content__icontains=content)
+    return render(request, 'search.html',
+                  dict(users=users, questions=questions, answers=answers))
