@@ -12,27 +12,23 @@
 {% block content %}
   {% include "navbar.html" %}
 
-  <ul class="mdl-list">
-    {% for feed in feeds %}
+  <ul class="mdl-list" id="feed-stream">
+    <template v-for="feed in feeds">
       <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ feed.username }}" class="circle">
-            <img src="/{{ feed.avatar }}" alt="Avatar">
+          <a href="/profile/$$ feed.username $$" class="circle">
+            <img :src="'/' + feed.avatar" alt="Avatar">
           </a>
           <span>
-            <a href="/profile/{{ feed.username }}">{{ feed.username }}</a>
-            {% if feed.event_type == 'question' %}
-              提出了问题
-            {% elif feed.event_type == 'answer' %}
-              回答了问题
-            {% elif feed.event_type == 'vote' %}
-              点赞了回答
-            {% endif %}
+            <a :href="/profile/$$ feed.username $$/">$$ feed.username $$</a>
+              <span v-if="feed.event_type == 'question'">提出了问题</span>
+              <span v-if="feed.event_type == 'answer'">回答了问题</span>
+              <span v-if="feed.event_type == 'vote'">点赞了回答</span>
             <br>
-          <a href="/questions/{{ feed.question_id }}/">{{ feed.title }}</a>
+          <a href="/questions/$$ feed.question_id $$/">$$ feed.title $$</a>
           </span>
           <span class="mdl-list__item-text-body">
-              {{ feed.content|safe }}
+              $$$ feed.content $$$
           </span>
         </span>
         <span class="mdl-list__item-secondary-content">
@@ -42,7 +38,12 @@
           </a>
         </span>
       </li>
-    {% endfor %}
+    </template>
   </ul>
 
+{% endblock %}
+
+{% block script %}
+  <script src="{% static "scripts/vue.min.js" %}"></script>
+  <script src="{% static "scripts/index.js" %}"></script>
 {% endblock %}

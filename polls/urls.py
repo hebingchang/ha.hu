@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^discover/$', views.discover),
     url(r'^search/$', views.search),
     url(r'^upload/$', views.upload),
+    url(r'^index_feeds/$', views.index_feeds)
 ]

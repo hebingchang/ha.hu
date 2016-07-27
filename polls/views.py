@@ -21,9 +21,15 @@ from PIL import Image
 @login_required
 @require_GET
 def index(request):
+    return render(request, 'index.html', {})
+
+
+@login_required
+@require_GET
+def index_feeds(request):
     cur_user = request.user
     feeds = cache.get_feeds(cur_user)
-    return render(request, 'index.html', dict(cur_user=cur_user, feeds=feeds))
+    return JsonResponse(dict(feeds=feeds))
 
 
 @require_GET
