@@ -245,3 +245,9 @@ def deactive_user(request):
 @login_required
 def chat(request):
     return render(request, 'chat.html', {})
+
+
+def discover(request):
+    questions = Question.objects.all()
+    return render(request, 'discover.html',
+                  dict(questions=questions))
