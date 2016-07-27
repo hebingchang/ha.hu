@@ -10,7 +10,9 @@ from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 from django.utils import timezone
+from django.contrib.sessions.models import Session
 
+from .socket import socket_redis
 from .forms import LoginForm, SignupForm
 from . import models, cache
 from .models import Question, Answer, Vote, U2URelationship, ContentImage
@@ -47,6 +49,7 @@ def sign(request):
 
 @require_GET
 def profile(request, username):
+    socket_redis.publish('data', 'data')
     cur_user = request.user
     user = get_object_or_404(User, username=username)
     votes = Vote.objects.filter(from_user=user)
@@ -173,6 +176,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
                 auth.login(request, user)
+                request.session['username'] = username
                 return redirect('/')
             else:
                 return render(request, 'login.html', {'password_is_wrong': True})
@@ -326,3 +330,11 @@ def upload(request):
         return HttpResponse(
             "<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox')"
             ".val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)
+
+
+def socket_api(request):
+    session_key = request.GET['session_id']
+    session = Session.objects.get(pk=session_key)
+    user_id = session.get_decoded()['_auth_user_id']
+
+    return HttpResponse('')
