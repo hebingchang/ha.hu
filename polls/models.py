@@ -77,7 +77,7 @@ def follow(from_user, user):
 class Question(models.Model):
     __tablename__ = 'question'
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100, default='')
     content = models.TextField(default='')
     create_time = models.DateTimeField(default=timezone.now)
