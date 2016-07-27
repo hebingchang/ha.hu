@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import LoginForm, SignupForm
-from . import models
+from . import models, cache
 from .models import Question, Answer, Vote, U2URelationship
 from .tasks import new_feed
 from hahu.settings import CACHE_CONTENT_LENGTH
@@ -20,9 +20,8 @@ from hahu.settings import CACHE_CONTENT_LENGTH
 @require_GET
 def index(request):
     cur_user = request.user
-    event_objs = models.newest_events(cur_user, 1000)
-    events = list(map(lambda e: (type(e).__tablename__, e), event_objs))
-    return render(request, 'index.html', dict(cur_user=cur_user, events=events))
+    feeds = cache.get_feeds(cur_user)
+    return render(request, 'index.html', dict(cur_user=cur_user, feeds=feeds))
 
 
 @require_GET
@@ -54,8 +53,8 @@ def new_question(request):
 
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
-    q = Question(from_user=cur_user, title=title, content=content)
-    q.save()
+    question = Question(from_user=cur_user, title=title, content=content)
+    question.save()
     new_feed.delay(
         user_id=cur_user.id,
         follower_names=cur_user.profile.follower_names,
@@ -63,14 +62,14 @@ def new_question(request):
             event_type='question',
             title=title,
             content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
-            create_time=q.create_time.timestamp(),
+            create_time=question.create_time.timestamp(),
             username=cur_user.username,
             avatar=cur_user.profile.avatar.url,
             feed_id=str(question.id)
         )
     )
 
-    return redirect('/questions/{}'.format(q.id))
+    return redirect('/questions/{}'.format(question.id))
 
 
 @login_required

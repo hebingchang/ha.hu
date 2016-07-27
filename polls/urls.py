@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^accounts/deactive/$', views.deactive_user),
     url(r'^profile/(?P<username>.*)/$', views.profile),
     url(r'^questions/(?P<question_id>.*)/$', views.question),
-    url(r'^questions/create/$', views.new_question),
+    url(r'^question/create/$', views.new_question),
     url(r'^questions/delete/$', views.delete_question),
     url(r'^vote/create/$', views.vote),
     url(r'^settings/$', views.settings),

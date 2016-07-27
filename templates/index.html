@@ -13,32 +13,31 @@
   {% include "navbar.html" %}
 
   <ul>
-    {% for event in events %}
+    {% for feed in feeds %}
       <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
-          <a href="/profile/{{ event.1.from_user.username }}" class="circle">
-            <img src="/{{ event.1.from_user.profile.avatar.url }}" alt="Avatar">
+          <a href="/profile/{{ feed.username }}" class="circle">
+            <img src="/{{ feed.avatar }}" alt="Avatar">
           </a>
           <span>
-            {{ event.1.from_user.username }}
-            {% if event.0 == 'question' %}
-              提了一个问题：<a href="/questions/{{ event.1.id }}">{{ event.1.title }}</a>
-            {% elif event.0 == 'answer' %}
-              回答了问题: <a href="/questions/{{ event.1.from_question.id }}">{{ event.1.from_question.title }}</a>
-            {% elif event.0 == 'vote' %}
-              给 {{ event.1.to_answer.from_user.username }} 的对
-              <a href="/questions/{{ event.1.to_answer.from_question.id }}">
-                {{ event.1.to_answer.from_question.title }}
-              </a>的回答点了一个赞
+            {{ feed.1.from_user.username }}
+            {% if feed.event_type == 'question' %}
+              提出了问题
+              {#              提了一个问题：<a href="/questions/{{ feed.1.id }}">{{ feed.1.title }}</a>#}
+            {% elif feed.event_type == 'answer' %}
+              回答了问题
+              {#              回答了问题: <a href="/questions/{{ feed.1.from_question.id }}">{{ feed.1.from_question.title }}</a>#}
+            {% elif feed.event_type == 'vote' %}
+              点赞了回答
+              {#              <a href="/questions/{{ feed.1.to_answer.from_question.id }}">#}
+              {#                {{ feed.1.to_answer.from_question.title }}#}
+              {#              </a>的回答点了一个赞#}
             {% endif %}
             <br>
+          <a href="#">{{ feed.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
-            {% if event.0 == 'question' or event.0 == 'answer' %}
-              {{ event.1.content|safe }}
-            {% elif event.0 == 'vote' %}
-              {{ event.1.to_answer.content|safe }}
-            {% endif %}
+              {{ feed.content|safe }}
           </span>
         </span>
         <span class="mdl-list__item-secondary-content">
