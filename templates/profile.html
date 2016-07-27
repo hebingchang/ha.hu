@@ -73,6 +73,36 @@
         <span id="time">注册时间: {{ user.date_joined }}</span>
       </div>
     </div>
+
+    {% if questions %}
+      <div class="mdl-card mdl-shadow--4dp card list">
+        <ul class="mdl-list">
+          {% for question in questions %}
+            <li class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+              <a href="/profile/{{ question.from_user.username }}/" class="circle">
+                <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar">
+              </a>
+              <span>
+                  提出了问题
+                <br>
+              <a href="/questions/{{ question.id }}/">{{ question.title }}</a>
+              </span>
+              <span class="mdl-list__item-text-body">
+                  {{ question.content|safe }}
+              </span>
+            </span>
+              <span class="mdl-list__item-secondary-content">
+              <span class="mdl-list__item-secondary-info">Detail</span>
+              <a class="mdl-list__item-secondary-action" href="/questions/{{ question.id }}/">
+                <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
+              </a>
+            </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
   </div>
 
 {% endblock %}
