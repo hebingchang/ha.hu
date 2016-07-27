@@ -38,7 +38,7 @@ def update_feeds_set(user_ids, feed_ids):
 
 def get_feeds(user, page_num=0):
     from . import models
-    feeds_set_key = 'feeds_set_' + str(user.id)
+    feeds_set_key = 'feeds_set_' + str(user.username)
     start, end = page_num * PER_PAGE_FEEDS_NUM, (page_num + 1) * PER_PAGE_FEEDS_NUM
     feed_ids = list(map(lambda k: k.decode('utf-8'), redis_server.zrange(feeds_set_key, start, end)))
     if len(feed_ids) == 0:
