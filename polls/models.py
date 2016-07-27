@@ -4,6 +4,7 @@ from django.utils.html import strip_tags
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
+from datetime import datetime
 
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -32,7 +33,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=10, default='')
     avatar = models.ImageField(upload_to=_content_file_name, default='static/images/anonymous.jpg')
     self_intro = models.CharField(max_length=150, default='此用户太懒了，并没有填写个人介绍...')
-    sign_time = models.DateField(default=timezone.now)
+    sign_time = models.DateField(default=datetime(1970, 1, 1))
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \
