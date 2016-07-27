@@ -1,3 +1,10 @@
+#feed-stream {
+  width: 1024px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 ul i {
   color: #2196F3;
 }
