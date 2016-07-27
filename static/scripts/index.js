@@ -1,6 +1,7 @@
 'use strict';
 
 $(function () {
+  var page_num = 0;
   Vue.config.delimiters = ['$$', '$$'];
   Vue.config.unsafeDelimiters = ['$$$', '$$$'];
   var vm = new Vue({
@@ -12,7 +13,7 @@ $(function () {
     }
   });
 
-  $.get('/index_feeds/').done(function (data) {
+  $.get('/index_feeds/?page=' + page_num).done(function (data) {
     vm.feeds = vm.feeds.concat(data['feeds']);
     vm.$set('is_signed', data['is_signed']);
     vm.$set('cur_user', data['cur_user']);
@@ -27,5 +28,16 @@ $(function () {
       $(self).parent().append("<span>您今天已经签过到了...</span>");
       $(self).remove();
     })
-  })
+  });
+
+  $(window).scroll(function () {
+    if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+      page_num++;
+      $.get('/index_feeds/?page=' + page_num).done(function (data) {
+        vm.feeds = vm.feeds.concat(data['feeds']);
+        vm.$set('is_signed', data['is_signed']);
+        vm.$set('cur_user', data['cur_user']);
+      });
+    }
+  });
 });

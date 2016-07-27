@@ -30,7 +30,7 @@ def index(request):
 @require_GET
 def index_feeds(request):
     cur_user = request.user
-    feeds = cache.get_feeds(cur_user)
+    feeds = cache.get_feeds(cur_user, int(request.GET.get('page', '')))
     is_signed = (cur_user.profile.sign_time == timezone.now().date())
     return JsonResponse(dict(cur_user=cur_user.username, feeds=feeds, is_signed=is_signed))
 
