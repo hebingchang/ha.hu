@@ -21,7 +21,7 @@ def new_feed(feed_id, feed, user_id):
 def delete_feed(feed_id, user_id):
     feed_key = 'feed_' + feed_id
     redis_server.delete(feed_key)
-    redis_server.lrem('feeds_' + user_id, feed_key)
+    redis_server.lrem('feeds_' + user_id, feed_id)
 
 
 def update_feeds_set(user_ids, feed_ids):
@@ -30,7 +30,7 @@ def update_feeds_set(user_ids, feed_ids):
 
     feed_keys = list(map(lambda i: 'feed_' + i, feed_ids))
     create_times = list(map(lambda f: -json.loads(f.decode('utf-8'))['create_time'], redis_server.mget(feed_keys)))
-    data = dict(zip(feed_keys, create_times))
+    data = dict(zip(feed_ids, create_times))
     for user_id in user_ids:
         feeds_set_key = 'feeds_set_' + user_id
         redis_server.zadd(feeds_set_key, **data)

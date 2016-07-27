@@ -11,8 +11,9 @@ def new_feed(user_id, follower_names, feed, feed_id):
 
 
 @shared_task
-def new_follow(from_user_id, to_user_id, feeds):
-    raise NotImplementedError
+def new_follow(from_user_id, to_user_id):
+    feed_ids = list(map(lambda k: k.decode('utf-8'), cache.redis_server.lrange('feeds_list_' + from_user_id, 0, -1)))
+    cache.update_feeds_set(user_ids=[to_user_id], feed_ids=feed_ids)
 
 
 @shared_task

@@ -12,7 +12,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import LoginForm, SignupForm
 from . import models, cache
 from .models import Question, Answer, Vote, U2URelationship
-from .tasks import new_feed
+from .tasks import new_feed, new_follow
 from hahu.settings import CACHE_CONTENT_LENGTH
 
 
@@ -116,7 +116,9 @@ def follow(request):
     cur_user = request.user
     to_user = get_object_or_404(User, username=request.POST.get('to_user', ''))
     success = models.follow(cur_user, to_user)
-    if not success:
+    if success:
+        new_follow.delay(from_user_id=cur_user.username, to_user_id=to_user.username)
+    else:
         U2URelationship.objects.get(from_user=cur_user, to_user=to_user).delete()
         success = True
 
