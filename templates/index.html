@@ -20,18 +20,13 @@
             <img src="/{{ feed.avatar }}" alt="Avatar">
           </a>
           <span>
-            {{ feed.1.from_user.username }}
+            {{ feed.username }}
             {% if feed.event_type == 'question' %}
               提出了问题
-              {#              提了一个问题：<a href="/questions/{{ feed.1.id }}">{{ feed.1.title }}</a>#}
             {% elif feed.event_type == 'answer' %}
               回答了问题
-              {#              回答了问题: <a href="/questions/{{ feed.1.from_question.id }}">{{ feed.1.from_question.title }}</a>#}
             {% elif feed.event_type == 'vote' %}
               点赞了回答
-              {#              <a href="/questions/{{ feed.1.to_answer.from_question.id }}">#}
-              {#                {{ feed.1.to_answer.from_question.title }}#}
-              {#              </a>的回答点了一个赞#}
             {% endif %}
             <br>
           <a href="/questions/{{ feed.question_id }}/">{{ feed.title }}</a>
