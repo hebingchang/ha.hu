@@ -16,7 +16,6 @@ $(function () {
     vm.feeds = vm.feeds.concat(data['feeds']);
     vm.$set('is_signed', data['is_signed']);
     vm.$set('cur_user', data['cur_user']);
-    console.log(vm.feeds, vm.is_signed, vm.cur_user)
   });
 
   $('#sign-btn').click(function () {
