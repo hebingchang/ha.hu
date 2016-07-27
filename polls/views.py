@@ -4,15 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import LoginForm, SignupForm
 from . import models, cache
+<<<<<<< Updated upstream
 from .models import Question, Answer, Vote, U2URelationship
 from .tasks import new_feed, new_follow
+from .models import Question, Answer, Vote, U2URelationship, ContentImage
+from .tasks import new_feed
 from hahu.settings import CACHE_CONTENT_LENGTH
 
 
@@ -53,6 +56,7 @@ def new_question(request):
 
     title = request.POST.get('title', '')
     content = request.POST.get('content', '')
+    print(content)
     question = Question(from_user=cur_user, title=title, content=content)
     question.save()
     new_feed.delay(
@@ -253,7 +257,6 @@ def deactive_user(request):
 def chat(request):
     return render(request, 'chat.html', {})
 
-
 def discover(request):
     questions = Question.objects.all()
     return render(request, 'discover.html',
@@ -269,3 +272,13 @@ def search(request):
     answers = Answer.objects.filter(content__icontains=content)
     return render(request, 'search.html',
                   dict(users=users, questions=questions, answers=answers))
+
+def upload(request):
+    contentImage = ContentImage()
+    image = request.FILES.get('image', '')
+    if image:
+        contentImage.img.save(image.name, ContentFile(image.read()))
+        contentImage.save()
+        abs_url = '/' + contentImage.img.url
+        return HttpResponse("<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)
+        

@@ -68,3 +68,4 @@ class SignupForm(forms.Form):
             raise forms.ValidationError(u'用户名、密码和邮箱为必填项')
         else:
             cleaned_data = super(SignupForm, self).clean()
+

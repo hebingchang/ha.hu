@@ -23,3 +23,13 @@
 .submit-btn {
 	width: 100%;
 }
+
+#form-target {
+	display: none;
+}
+
+#img-form {
+	width: 0px;
+	height: 0;
+	overflow: hidden;
+}

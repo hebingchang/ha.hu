@@ -105,3 +105,5 @@ graphs
 # uploads
 static/avatars/
 !static/avatars/.gitkeep
+static/uploads/
+!static/uploads/.gitkeep

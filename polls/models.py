@@ -329,3 +329,12 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name='messages', db_index=True)
     create_time = models.DateTimeField(default=timezone.now)
     direction = models.SmallIntegerField(default=0)
+
+
+def _image_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (str(instance.id), ext)
+    return 'static/uploads/' + filename
+
+class ContentImage(models.Model):
+    img = models.ImageField(upload_to=_image_file_name)

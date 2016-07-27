@@ -12,9 +12,14 @@
 {% block content %}
 	{% include "navbar.html" %}
 	<div class="main-content">
+		<iframe id="form-target" name="form-target"></iframe>
+		<form id="img-form" action="/upload/" target="form-target" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+    		<input name="image" type="file" id="img-input">
+		</form>
+
 		<form action method="post">
 			{% csrf_token %}
-
 			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label title-wrapper">
     			<input class="mdl-textfield__input" type="text" id="id-input" name="title">
     			<label class="mdl-textfield__label" for="id-input">Edit Question Title Here</label>
@@ -32,26 +37,10 @@
 		</form>
 
 	</div>
+{% endblock %}
+
+{% block script %}
 	<script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
-	<script type="text/javascript">
-	  	tinymce.init({
-		  selector: 'textarea',
-		  height: 500,
-		  theme: 'modern',
-		  inline_syles: true,	
-		  plugins: [
-		    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-		    'searchreplace wordcount visualblocks visualchars code fullscreen',
-		    'insertdatetime media nonbreaking save table contextmenu directionality',
-		    'emoticons template paste textcolor colorpicker textpattern imagetools'
-		  ],
-		  toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-		  toolbar2: 'print preview media | forecolor backcolor emoticons',
-		  image_advtab: true,
-		  content_css: [
-		    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-		    '//www.tinymce.com/css/codepen.min.css'
-		  ]	
-		});
-	</script>
+	<script src="{% static "scripts/init_editor.js" %}"></script>
+	<script src="{% static "scripts/new_question.js" %}"></script>
 {% endblock %}
