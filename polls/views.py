@@ -96,27 +96,35 @@ def delete_question(request):
 @login_required
 @require_POST
 def vote(request):
+    type = request.POST.get('type', '')
     cur_user = request.user
+    if type == 'up':
+        to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
+        vote, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
+        question = vote.to_answer.from_question
 
-    to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
-    vt, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
-    ques = vt.to_answer.from_question
-
-    if created:
-        new_feed.delay(
-            user_id=cur_user.id,
-            follower_names=cur_user.profile.follower_names,
-            feed_id=str(vt.id), feed=dict(
-                event_type='vote',
-                title=ques.title,
-                question_id=str(ques.id),
-                content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
-                create_time=vt.create_time.timestamp(),
-                username=cur_user.username,
-                avatar=cur_user.profile.avatar.url,
-                feed_id=str(vt.id)
+        if created:
+            new_feed.delay(
+                user_id=cur_user.id,
+                follower_names=cur_user.profile.follower_names,
+                feed_id=str(vote.id), feed=dict(
+                    event_type='vote',
+                    title=question.title,
+                    question_id=str(question.id),
+                    content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
+                    create_time=vote.create_time.timestamp(),
+                    username=cur_user.username,
+                    avatar=cur_user.profile.avatar.url,
+                    feed_id=str(vote.id)
+                )
             )
-        )
+    if type == 'down':
+        to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
+        try:
+            vote = Vote.objects.get(from_user=cur_user, to_answer=to_answer)
+        except Exception as e:
+            return JsonResponse(dict(vote_num=to_answer.vote_num))
+        vote.delete()
 
     return JsonResponse(dict(vote_num=to_answer.vote_num))
 
