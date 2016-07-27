@@ -227,12 +227,15 @@ def get_self_feeds(user, start=0, end=100):
 
         if event_type == 'question':
             feed.update(title=event.title,
+                        question_id=str(event.id),
                         content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'answer':
             feed.update(title=event.from_question.title,
+                        question_id=str(event.from_question.id),
                         content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'vote':
             feed.update(title=event.to_answer.from_question.title,
+                        question_id=str(event.to_answer.from_question.id),
                         content=event.to_answer.content[:CACHE_CONTENT_LENGTH])
 
         feeds.append(feed)
@@ -293,12 +296,15 @@ def get_feeds(user, start=0, end=100):
 
         if event_type == 'question':
             feed.update(title=event.title,
+                        question_id=str(event.id),
                         content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'answer':
             feed.update(title=event.from_question.title,
+                        question_id=str(event.from_question.id),
                         content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
         elif event_type == 'vote':
             feed.update(title=event.to_answer.from_question.title,
+                        question_id=str(event.to_answer.from_question.id),
                         content=event.to_answer.content[:CACHE_CONTENT_LENGTH])
 
         feeds.append(feed)

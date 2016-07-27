@@ -61,6 +61,7 @@ def new_question(request):
         feed_id=str(question.id), feed=dict(
             event_type='question',
             title=title,
+            question_id = str(question.id),
             content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
             create_time=question.create_time.timestamp(),
             username=cur_user.username,
@@ -88,6 +89,7 @@ def vote(request):
 
     to_answer = get_object_or_404(Answer, id=request.POST.get('to_answer', ''))
     vote, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
+    question = vote.to_answer.from_question
 
     if created:
         new_feed.delay(
@@ -95,7 +97,8 @@ def vote(request):
             follower_names=cur_user.profile.follower_names,
             feed_id=str(vote.id), feed=dict(
                 event_type='vote',
-                title=to_answer.from_question.title,
+                title=question.title,
+                question_id=str(question.id),
                 content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
                 create_time=vote.create_time.timestamp(),
                 username=cur_user.username,
@@ -211,6 +214,7 @@ def new_answer(request, question_id):
             feed_id=str(answer.id), feed=dict(
                 event_type='answer',
                 title=question.title,
+                question_id=str(question.id),
                 content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
                 create_time=answer.create_time.timestamp(),
                 username=cur_user.username,

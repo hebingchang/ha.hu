@@ -34,7 +34,7 @@
               {#              </a>的回答点了一个赞#}
             {% endif %}
             <br>
-          <a href="#">{{ feed.title }}</a>
+          <a href="/questions/{{ feed.question_id }}/">{{ feed.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
               {{ feed.content|safe }}
