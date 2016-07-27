@@ -12,6 +12,7 @@
 {% block script %}
   <script>
     var username = '{{ user.username }}';
+    var cur_username = '{{cur_user.username}}'
     var csrf_token = '{{ csrf_token }}';
   </script>
   <script src="{% static "scripts/profile.js" %}"></script>
@@ -45,6 +46,10 @@
           <button id="follow-btn"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
             关注
+          </button>
+          <button id="chat-btn"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
+            私戳
           </button>
         {% elif cur_user != user and relationship and not is_superuser %}
           <button id="follow-btn"

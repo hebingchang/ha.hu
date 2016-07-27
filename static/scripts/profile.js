@@ -14,6 +14,10 @@ $(function () {
       }
     });
   });
+  $('#chat-btn').click(function () {
+    var url = '/chat/' + username + '/';
+    $(location).attr("href", url);
+  });
   $('#delete-btn').click(function () {
     var that = this;
     $.post('/accounts/deactive/', {
