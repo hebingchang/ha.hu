@@ -11,10 +11,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import LoginForm, SignupForm
 from . import models, cache
-from .models import Question, Answer, Vote, U2URelationship
-from .tasks import new_feed, new_follow
 from .models import Question, Answer, Vote, U2URelationship, ContentImage
-from .tasks import new_feed
+from .tasks import new_feed, new_follow, delete_follow
 from hahu.settings import CACHE_CONTENT_LENGTH
 
 
@@ -124,6 +122,7 @@ def follow(request):
     else:
         U2URelationship.objects.get(from_user=cur_user, to_user=to_user).delete()
         success = True
+        delete_follow.delay(from_user_id=cur_user.username, to_user_id=to_user.username)
 
     return JsonResponse(dict(success=success))
 
