@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+from imagekit.models import ProcessedImageField
 
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -337,4 +338,6 @@ def _image_file_name(instance, filename):
     return 'static/uploads/' + filename
 
 class ContentImage(models.Model):
-    img = models.ImageField(upload_to=_image_file_name)
+    img = ProcessedImageField(upload_to=_image_file_name,
+                                    format='JPEG',
+                                    options={'quality': 60})

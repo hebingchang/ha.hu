@@ -16,6 +16,7 @@ from .models import Question, Answer, Vote, U2URelationship, ContentImage
 from .tasks import new_feed, new_follow, delete_follow
 from hahu.settings import CACHE_CONTENT_LENGTH
 
+from PIL import Image
 
 @login_required
 @require_GET
@@ -284,7 +285,15 @@ def upload(request):
     if image:
         contentImage.img.save(image.name, ContentFile(image.read()))
         contentImage.save()
-        abs_url = '/' + contentImage.img.url
+        abs_url = contentImage.img.url
+
+        im = Image.open(abs_url)
+        w, h = im.size
+        if w > 700:
+            im.thumbnail((700, h * 700 / w))
+        im.save(abs_url)
+        abs_url = '/' + abs_url
+
         return HttpResponse(
             "<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox')"
             ".val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)

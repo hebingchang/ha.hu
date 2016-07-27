@@ -3,3 +3,4 @@ Django-extensions
 Pillow
 celery
 django-redis
+django-imagekit
