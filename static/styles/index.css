@@ -1,16 +1,16 @@
-i {
+ul i {
   color: #2196F3;
 }
 
 .circle {
-	line-height: 0;		/* remove line-height */
-	display: inline-block;	/* circle wraps image */
+  line-height: 0; /* remove line-height */
+  display: inline-block; /* circle wraps image */
   float: left;
-	margin: 5px;
-  border: 2px solid rgba(255,255,255,0.4);
-	border-radius: 50%;	/* relative value */
-	box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	transition: linear 0.25s;
+  margin: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%; /* relative value */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  transition: linear 0.25s;
   height: 4rem;
   width: 4rem;
 }
@@ -18,11 +18,11 @@ i {
 .circle img {
   height: 100%;
   width: 100%;
-	border-radius: 50%;
+  border-radius: 50%;
 }
 
 .circle:hover {
-	transition: ease-out 0.2s;
-  border: 2px solid rgba(255,255,255,0.8);
+  transition: ease-out 0.2s;
+  border: 2px solid rgba(255, 255, 255, 0.8);
   -webkit-transition: ease-out 0.2s;
 }
