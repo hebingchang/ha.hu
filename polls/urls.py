@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^accounts/signup/$', views.signup),
     url(r'^accounts/getinfo/$', views.getinfo),
     url(r'^accounts/deactive/$', views.deactive_user),
+    url(r'^accounts/sign/$', views.sign),
     url(r'^profile/(?P<username>.*)/$', views.profile),
     url(r'^questions/(?P<question_id>.*)/$', views.question),
     url(r'^question/create/$', views.new_question),

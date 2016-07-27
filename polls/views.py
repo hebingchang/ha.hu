@@ -9,6 +9,7 @@ from django.utils.html import strip_tags
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
+from django.utils import timezone
 
 from .forms import LoginForm, SignupForm
 from . import models, cache
@@ -30,7 +31,18 @@ def index(request):
 def index_feeds(request):
     cur_user = request.user
     feeds = cache.get_feeds(cur_user)
-    return JsonResponse(dict(feeds=feeds))
+    is_signed = (cur_user.profile.sign_time == timezone.now().date())
+    return JsonResponse(dict(cur_user=cur_user.username, feeds=feeds, is_signed=is_signed))
+
+
+@login_required
+@require_POST
+def sign(request):
+    user = request.user
+    user.profile.sign_time = timezone.now().date()
+    user.profile.points += 1
+    user.profile.save()
+    return redirect('/')
 
 
 @require_GET

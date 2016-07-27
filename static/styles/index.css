@@ -1,8 +1,23 @@
-#feed-stream {
+#container {
   width: 1024px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+#feed-stream {
+  width: 80%;
+  float: left;
+}
+
+#sign {
+  width: 20%;
+  float: left;
+  margin-top: 22px;
+}
+
+#sign h2 {
+  font-family: "Roboto", "Microsoft YaHei", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
 }
 
 ul i {

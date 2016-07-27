@@ -32,6 +32,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=10, default='')
     avatar = models.ImageField(upload_to=_content_file_name, default='static/images/anonymous.jpg')
     self_intro = models.CharField(max_length=150, default='此用户太懒了，并没有填写个人介绍...')
+    sign_time = models.DateField(default=timezone.now)
 
     def __str__(self):
         return 'username: {}, nickname: {}, points: {}, gender: {}' \
@@ -337,7 +338,8 @@ def _image_file_name(instance, filename):
     filename = "%s.%s" % (str(instance.id), ext)
     return 'static/uploads/' + filename
 
+
 class ContentImage(models.Model):
     img = ProcessedImageField(upload_to=_image_file_name,
-                                    format='JPEG',
-                                    options={'quality': 60})
+                              format='JPEG',
+                              options={'quality': 60})

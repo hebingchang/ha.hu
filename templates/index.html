@@ -12,9 +12,10 @@
 {% block content %}
   {% include "navbar.html" %}
 
-  <ul class="mdl-list" id="feed-stream">
-    <template v-for="feed in feeds">
-      <li class="mdl-list__item mdl-list__item--three-line">
+  <div id="container">
+    <ul class="mdl-list" id="feed-stream">
+      <template v-for="feed in feeds">
+        <li class="mdl-list__item mdl-list__item--three-line">
         <span class="mdl-list__item-primary-content">
           <a href="/profile/$$ feed.username $$/" class="circle">
             <img :src="'/' + feed.avatar" alt="Avatar">
@@ -31,19 +32,36 @@
               $$$ feed.content $$$
           </span>
         </span>
-        <span class="mdl-list__item-secondary-content">
+          <span class="mdl-list__item-secondary-content">
           <span class="mdl-list__item-secondary-info">Detail</span>
           <a class="mdl-list__item-secondary-action" href="#">
             <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
           </a>
         </span>
-      </li>
-    </template>
-  </ul>
+        </li>
+      </template>
+    </ul>
+
+    <div class="mdl-card" id="sign">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">签到</h2>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <span v-if="is_signed">您今天已经签过到了...</span>
+        <button v-else id="sign-btn" data-username="$$ cur_user $$"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--white">
+          签到
+        </button>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 
 {% block script %}
   <script src="{% static "scripts/vue.min.js" %}"></script>
+  <script>
+    var csrf_token = '{{ csrf_token }}';
+  </script>
   <script src="{% static "scripts/index.js" %}"></script>
 {% endblock %}
