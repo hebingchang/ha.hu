@@ -51,3 +51,8 @@
   border: 2px solid rgba(255, 255, 255, 0.8);
   -webkit-transition: ease-out 0.2s;
 }
+
+
+.feed-tabs {
+  width: 1024px;
+}

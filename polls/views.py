@@ -49,14 +49,16 @@ def sign(request):
 def profile(request, username):
     cur_user = request.user
     user = get_object_or_404(User, username=username)
+    votes = Vote.objects.filter(from_user=user)
     questions = Question.objects.filter(from_user=user)
+    answers = Answer.objects.filter(from_user=user)
     is_superuser = cur_user.is_superuser
     relationship = None
     if cur_user != user:
         relationship = U2URelationship.objects.filter(from_user=cur_user, to_user=user).first()
     return render(request, 'profile.html',
                   dict(user=user, profile=user.profile, cur_user=cur_user, relationship=relationship,
-                       is_superuser=is_superuser, questions=questions))
+                       is_superuser=is_superuser, questions=questions, answers=answers, votes=votes))
 
 
 @require_GET
