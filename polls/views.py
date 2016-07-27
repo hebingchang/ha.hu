@@ -12,7 +12,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import LoginForm, SignupForm
 from . import models
 from .models import Question, Answer, Vote, U2URelationship
-from .tasks import save_feeds
+from .tasks import new_feed
 from hahu.settings import CACHE_CONTENT_LENGTH
 
 
@@ -22,7 +22,6 @@ def index(request):
     cur_user = request.user
     event_objs = models.newest_events(cur_user, 1000)
     events = list(map(lambda e: (type(e).__tablename__, e), event_objs))
-
     return render(request, 'index.html', dict(cur_user=cur_user, events=events))
 
 
@@ -57,14 +56,19 @@ def new_question(request):
     content = request.POST.get('content', '')
     q = Question(from_user=cur_user, title=title, content=content)
     q.save()
-    save_feeds.delay(cur_user.profile.follower_names, [dict(
-        event_type='question',
-        title=title,
-        content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
-        create_time=q.create_time.timestamp(),
-        username=cur_user.username,
-        avatar=cur_user.profile.avatar.url,
-    )])
+    new_feed.delay(
+        user_id=cur_user.id,
+        follower_names=cur_user.profile.follower_names,
+        feed_id=str(question.id), feed=dict(
+            event_type='question',
+            title=title,
+            content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
+            create_time=q.create_time.timestamp(),
+            username=cur_user.username,
+            avatar=cur_user.profile.avatar.url,
+            feed_id=str(question.id)
+        )
+    )
 
     return redirect('/questions/{}'.format(q.id))
 
@@ -87,14 +91,19 @@ def vote(request):
     vote, created = Vote.objects.get_or_create(from_user=cur_user, to_answer=to_answer)
 
     if created:
-        save_feeds.delay(cur_user.profile.follower_names, [dict(
-            event_type='vote',
-            title=to_answer.from_question.title,
-            content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
-            create_time=vote.create_time.timestamp(),
-            username=cur_user.username,
-            avatar=cur_user.profile.avatar.url,
-        )])
+        new_feed.delay(
+            user_id=cur_user.id,
+            follower_names=cur_user.profile.follower_names,
+            feed_id=str(vote.id), feed=dict(
+                event_type='vote',
+                title=to_answer.from_question.title,
+                content=strip_tags(to_answer.content)[:CACHE_CONTENT_LENGTH],
+                create_time=vote.create_time.timestamp(),
+                username=cur_user.username,
+                avatar=cur_user.profile.avatar.url,
+                feed_id=str(vote.id)
+            )
+        )
 
     return JsonResponse(dict(vote_num=to_answer.vote_num))
 
@@ -197,14 +206,19 @@ def new_answer(request, question_id):
         answer = Answer(from_question=question, from_user=cur_user, content=content)
         answer.save()
 
-        save_feeds.delay(cur_user.profile.follower_names, [dict(
-            event_type='answer',
-            title=question.title,
-            content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
-            create_time=answer.create_time.timestamp(),
-            username=cur_user.username,
-            avatar=cur_user.profile.avatar.url,
-        )])
+        new_feed.delay(
+            user_id=cur_user.id,
+            follower_names=cur_user.profile.follower_names,
+            feed_id=str(answer.id), feed=dict(
+                event_type='answer',
+                title=question.title,
+                content=strip_tags(content)[:CACHE_CONTENT_LENGTH],
+                create_time=answer.create_time.timestamp(),
+                username=cur_user.username,
+                avatar=cur_user.profile.avatar.url,
+                feed_id=str(answer.id)
+            )
+        )
 
         return redirect('/questions/{}/'.format(question_id))
 

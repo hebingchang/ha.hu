@@ -181,8 +181,67 @@ def newest_events(user, num=10):
     return events
 
 
-def get_feeds(user, start, end):
-    if start == end:
+def get_self_feeds(user, start=0, end=100):
+    if start >= end:
+        return []
+
+    with connection.cursor() as c:
+        event_types = ['question', 'answer', 'vote']
+        single_query_sql_template = \
+            """
+            SELECT id, create_time, from_user_id, "{}" AS table_name
+            FROM polls_{}
+            WHERE from_user_id = {}
+            """
+
+        union_query_sql = '\nUNION\n'.join(
+            [single_query_sql_template.format(t, t, user.id) for t in event_types])
+
+        raw_sql = union_query_sql + \
+                  """
+                  ORDER BY create_time DESC
+                  LIMIT {}, {}
+                  """.format(start, end)
+
+        print(raw_sql)
+
+        logger.info('raw sql', raw_sql)
+        c.execute(raw_sql)
+
+        results = c.fetchall()
+
+    feeds = []
+
+    for r in results:
+        event_id, event_type = r[0], r[-1]
+        event = ({'question': Question,
+                  'answer': Answer,
+                  'vote': Vote,
+                  })[event_type].objects.get(id=event_id)
+
+        feed = dict(event_type=event_type,
+                    feed_id=str(event.id),
+                    create_time=event.create_time.timestamp(),
+                    username=event.from_user.username,
+                    avatar=event.from_user.profile.avatar.url)
+
+        if event_type == 'question':
+            feed.update(title=event.title,
+                        content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
+        elif event_type == 'answer':
+            feed.update(title=event.from_question.title,
+                        content=strip_tags(event.content)[:CACHE_CONTENT_LENGTH])
+        elif event_type == 'vote':
+            feed.update(title=event.to_answer.from_question.title,
+                        content=event.to_answer.content[:CACHE_CONTENT_LENGTH])
+
+        feeds.append(feed)
+
+    return feeds
+
+
+def get_feeds(user, start=0, end=100):
+    if start >= end:
         return []
 
     followees = user.profile.followees
@@ -227,6 +286,7 @@ def get_feeds(user, start, end):
                   })[event_type].objects.get(id=event_id)
 
         feed = dict(event_type=event_type,
+                    feed_id=str(event.id),
                     create_time=event.create_time.timestamp(),
                     username=event.from_user.username,
                     avatar=event.from_user.profile.avatar.url)

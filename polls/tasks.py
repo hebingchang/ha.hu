@@ -1,19 +1,10 @@
 from __future__ import absolute_import
 
 from celery import shared_task
-from .cache import redis_server
-import json
-from hahu.settings import CACHE_FEEDS_NUM
+from . import cache
 
 
 @shared_task
-def save_feeds(user_ids, feeds):
-    if len(feeds) == 0:
-        return
-
-    data = dict(((json.dumps(feed), -feed['create_time']) for feed in feeds))
-
-    for user_id in user_ids:
-        feed_key = 'feeds_' + str(user_id)
-        redis_server.zadd('feeds_' + str(user_id), **data)
-        redis_server.zremrangebyrank(feed_key, CACHE_FEEDS_NUM, redis_server.zcard(feed_key))
+def new_feed(user_id, follower_names, feed, feed_id):
+    cache.new_feed(user_id=user_id, feed_id=feed_id, feed=feed)
+    cache.update_feeds_set(user_ids=follower_names, feed_ids=[feed_id])
