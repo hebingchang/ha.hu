@@ -11,7 +11,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import LoginForm, SignupForm
 from . import models, cache
-<<<<<<< Updated upstream
 from .models import Question, Answer, Vote, U2URelationship
 from .tasks import new_feed, new_follow
 from .models import Question, Answer, Vote, U2URelationship, ContentImage
@@ -281,4 +280,4 @@ def upload(request):
         contentImage.save()
         abs_url = '/' + contentImage.img.url
         return HttpResponse("<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('%s').closest('.mce-window').find('.mce-primary').click();</script>" % abs_url)
-        
+
