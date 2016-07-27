@@ -51,7 +51,7 @@
           <a href="/questions/{{ question.id }}/">{{ question.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
-              {{ question.content|safe }}
+              {{ question.content|striptags }}
           </span>
         </span>
             <span class="mdl-list__item-secondary-content">
@@ -80,7 +80,7 @@
           <a href="/questions/{{ answer.from_question.id }}/">{{ answer.from_question.title }}</a>
           </span>
           <span class="mdl-list__item-text-body">
-              {{ answer.content }}
+              {{ answer.content|striptags }}
           </span>
         </span>
             <span class="mdl-list__item-secondary-content">

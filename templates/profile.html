@@ -89,7 +89,7 @@
               <a href="/questions/{{ question.id }}/">{{ question.title }}</a>
               </span>
               <span class="mdl-list__item-text-body">
-                  {{ question.content }}
+                  {{ question.content|striptags }}
               </span>
             </span>
               <span class="mdl-list__item-secondary-content">

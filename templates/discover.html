@@ -25,7 +25,7 @@
             <span class="mdl-list__item-primary-content">
               <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar" class="mdl-list__item-avatar">
               <span>{{ question.title }}</span>
-              <span class="mdl-list__item-text-body">{{ question.content }}</span>
+              <span class="mdl-list__item-text-body">{{ question.content|striptags }}</span>
             </span>
             <span class="mdl-list__item-primary-content">
               <a href="/questions/{{ question.id }}/" class="mdl-list__item-secondary-action">
@@ -43,7 +43,7 @@
             <span class="mdl-list__item-primary-content">
               <img src="/{{ answer.from_user.profile.avatar }}" alt="Avatar" class="mdl-list__item-avatar">
               <span>{{ answer.from_question.title }} 问题中 {{ answer.from_user.username }} 的回答</span>
-              <span class="mdl-list__item-text-body">{{ answer.content }}</span>
+              <span class="mdl-list__item-text-body">{{ answer.content|striptags }}</span>
             </span>
             <span class="mdl-list__item-primary-content">
               <a href="/questions/{{ answer.from_question.id }}/" class="mdl-list__item-secondary-action">
