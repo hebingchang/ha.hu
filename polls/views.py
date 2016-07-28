@@ -107,7 +107,7 @@ def new_question(request):
 @login_required
 @staff_member_required
 def delete_question(request):
-    question_id = int(request.POST.get('question_id', ''))
+    question_id = request.POST.get('question_id', '')
     q = get_object_or_404(Question, id=question_id)
     q.delete()
     return redirect('/')
@@ -272,8 +272,8 @@ def new_answer(request, question_id):
 @login_required
 @staff_member_required
 def delete_answer(request):
-    answer_id = int(request.POST.get('answer_id', ''))
-    question_id = int(request.POST.get('question_id', ''))
+    answer_id = request.POST.get('answer_id', '')
+    question_id = request.POST.get('question_id', '')
     a = get_object_or_404(Answer, id=answer_id)
     a.delete()
     cache.delete_feed(feed_id=answer_id, user_id=a.from_user.username)
@@ -351,11 +351,15 @@ def socket_api(request):
 
     return HttpResponse('')
 
+
+@login_required
 def comment(request, answer_id):
     a = get_object_or_404(Answer, id=answer_id)
     comments = Comment.objects.filter(from_answer=a)
     return render(request, 'comment.html', dict(comments=comments))
 
+
+@login_required
 def new_comment(request):
     cur_user = request.user
     answer_id = request.POST.get('to_answer', '')
