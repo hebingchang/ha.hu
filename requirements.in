@@ -4,3 +4,4 @@ Pillow
 celery
 django-redis
 django-imagekit
+pymysql
