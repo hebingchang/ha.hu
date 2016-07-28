@@ -26,11 +26,11 @@ $(function () {
       $.get(("/comments/"+answer_id + "/"), function(data, status) {
         $(panel).css('display', 'block');
         $(list).html(data);
-        $(btn).text("Hide Comment"); 
+        $(btn).text("Hide Comment");
       });
     } else {
       $(panel).css('display', 'none');
-      $(btn).text("Show Comment"); 
+      $(btn).text("Show Comment");
     }
   });
 
@@ -72,9 +72,11 @@ $(function () {
   });
 
   $('#delete_question').click(function () {
-    $.post('/questions/delete/', {
+    $.post('/question/delete/', {
       question_id: question_id,
       csrfmiddlewaretoken: csrf_token
+    }).done(function() {
+      window.location.href = '/discover';
     });
   });
 
@@ -84,6 +86,8 @@ $(function () {
       question_id: question_id,
       answer_id: $(that).attr('data-answer-id'),
       csrfmiddlewaretoken: csrf_token
+    }).done(function() {
+      window.location.reload();
     });
   });
 

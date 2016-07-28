@@ -110,7 +110,7 @@ def delete_question(request):
     question_id = request.POST.get('question_id', '')
     q = get_object_or_404(Question, id=question_id)
     q.delete()
-    return redirect('/')
+    return HttpResponse('')
 
 
 @login_required
