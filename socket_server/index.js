@@ -17,6 +17,7 @@ var sub = redis.createClient({
 });
 
 sub.on('message', function(channel, message) {
+  message = message.toString();
   console.log(channel, message);
   if (sockets[channel]) {
     sockets[channel].emit('data', message);
@@ -30,9 +31,10 @@ io.on('connection', function(socket) {
   } else {
     console.log('New');
 
-    sockets[cookies.sessionid] = socket
     sub.subscribe(cookies.sessionid);
   }
+
+  sockets[cookies.sessionid] = socket
 
   socket.on('data', function(data) {
     console.log(data);
