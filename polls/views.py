@@ -55,13 +55,16 @@ def profile(request, username):
     votes = Vote.objects.filter(from_user=user)[:50]
     questions = Question.objects.filter(from_user=user)[:50]
     answers = Answer.objects.filter(from_user=user)[:50]
+    followings = U2URelationship.objects.filter(from_user=user)[0:50]
+    followers = U2URelationship.objects.filter(to_user=user)[0:50]
     is_superuser = cur_user.is_superuser
     relationship = None
     if cur_user != user:
         relationship = U2URelationship.objects.filter(from_user=cur_user, to_user=user).first()
     return render(request, 'profile.html',
                   dict(user=user, profile=user.profile, cur_user=cur_user, relationship=relationship,
-                       is_superuser=is_superuser, questions=questions, answers=answers, votes=votes))
+                       is_superuser=is_superuser, questions=questions, answers=answers, votes=votes,
+                       followings=followings, followers=followers))
 
 
 @require_GET

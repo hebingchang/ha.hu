@@ -88,6 +88,8 @@
       <a href="#votes-panel" class="mdl-tabs__tab is-active">Votes</a>
       <a href="#questions-panel" class="mdl-tabs__tab">Questions</a>
       <a href="#answers-panel" class="mdl-tabs__tab">Answers</a>
+      <a href="#following-panel" class="mdl-tabs__tab">Following</a>
+      <a href="#followers-panel" class="mdl-tabs__tab">Followers</a>
     </div>
 
     <div class="mdl-tabs__panel is-active" id="votes-panel">
@@ -176,38 +178,43 @@
         {% endfor %}
       </ul>
     </div>
+
+    <div class="mdl-tabs__panel is-active" id="following-panel">
+      <ul class="mdl-list list">
+        {% for following in followings %}
+          <li class="mdl-list__item mdl-list__item--three-line">
+        <span class="mdl-list__item-primary-content">
+          <a href="/profile/{{ following.to_user.username }}/" class="circle">
+            <img src="/{{ following.to_user.profile.avatar }}" alt="Avatar">
+          </a>
+          <span>
+            {{ following.to_user.username }}
+          </span>
+        </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="mdl-tabs__panel is-active" id="followers-panel">
+      <ul class="mdl-list list">
+        {% for follower in followers %}
+          <li class="mdl-list__item mdl-list__item--three-line">
+        <span class="mdl-list__item-primary-content">
+          <a href="/profile/{{ follower.from_user.username }}/" class="circle">
+            <img src="/{{ follower.from_user.profile.avatar }}" alt="Avatar">
+          </a>
+          <span>
+            {{ follower.from_user.username }}
+          </span>
+        </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
   </div>
 
-
-<!--     {% if questions %}
-      <div class="mdl-card mdl-shadow--4dp card list">
-        <ul class="mdl-list">
-          {% for question in questions %}
-            <li class="mdl-list__item mdl-list__item--three-line">
-            <span class="mdl-list__item-primary-content">
-              <a href="/profile/{{ question.from_user.username }}/" class="circle">
-                <img src="/{{ question.from_user.profile.avatar }}" alt="Avatar">
-              </a>
-              <span>
-                  提出了问题
-                <br>
-              <a href="/questions/{{ question.id }}/">{{ question.title }}</a>
-              </span>
-              <span class="mdl-list__item-text-body">
-                  {{ question.content|striptags }}
-              </span>
-            </span>
-              <span class="mdl-list__item-secondary-content">
-              <span class="mdl-list__item-secondary-info">Detail</span>
-              <a class="mdl-list__item-secondary-action" href="/questions/{{ question.id }}/">
-                <i class="mdi mdi-36px mdi-arrow-right-bold-circle"></i>
-              </a>
-            </span>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %} -->
   </div>
 
 {% endblock %}
