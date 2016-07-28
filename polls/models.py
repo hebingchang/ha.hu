@@ -138,7 +138,6 @@ class Comment(models.Model):
     content = models.CharField(max_length=100, default='')
     from_user = models.ForeignKey(User, related_name='user_comments')
     from_answer = models.ForeignKey(Answer, related_name='comments')
-    vote_num = models.IntegerField(default=0)
 
 
 class Vote(models.Model):

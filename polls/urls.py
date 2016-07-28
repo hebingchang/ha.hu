@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^upload/$', views.upload),
     url(r'^index_feeds/$', views.index_feeds),
     url(r'^socket_api/$', views.socket_api),
+    url(r'^comments/(?P<answer_id>.*)/$', views.comment),
+    url(r'^comment/create/$', views.new_comment),
 ]

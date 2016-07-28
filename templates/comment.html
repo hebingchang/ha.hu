@@ -1,0 +1,20 @@
+<div class="mdl-tabs__panel">
+  <ul class="mdl-list list">
+    {% for comment in comments %}
+      <li class="mdl-list__item mdl-list__item--two-line">
+    <span class="mdl-list__item-primary-content">
+      <a href="/profile/{{ comment.from_user.username }}/" class="comment-circle">
+        <img src="/{{ comment.from_user.profile.avatar }}" alt="Avatar">
+      </a>
+        <span>
+            {{ comment.from_user.username }}
+        </span>
+        <br>
+        <span class="mdl-list__item-text-body">
+            {{ comment.content|striptags }}
+        </span>
+      </span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

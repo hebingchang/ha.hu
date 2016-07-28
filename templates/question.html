@@ -7,6 +7,7 @@
 
 {% block style %}
   <link rel="stylesheet" href="{% static "styles/question.css" %}">
+  <link rel="stylesheet" href="{% static "styles/comment.css" %}">
 {% endblock %}
 
 {% block content %}
@@ -53,9 +54,21 @@
             {{ answer.content|safe }}
           </div>
           <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Comment
+
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect comment-btn">
+              Show Comment
             </a>
+            <div class="comment-panel">
+              <div class="comment-list">
+              </div>
+                 <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input comment-content" type="text" id="sample1" style="width: 100%">
+                    <label class="mdl-textfield__label" for="sample1">Edit Comment</label>
+                </div>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary comment-add-btn">
+                      Add
+                </button>
+            </div>
             {% if cur_user.is_superuser %}
               <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect delete_answer"
                  data-answer-id="{{ answer.id }}">

@@ -1,0 +1,24 @@
+.comment-circle {
+  line-height: 0;
+  display: inline-block;
+  float: left;
+  margin: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  transition: linear 0.25s;
+  height: 3rem;
+  width: 3rem;
+}
+
+.comment-circle img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.comment-circle:hover {
+  transition: ease-out 0.2s;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  -webkit-transition: ease-out 0.2s;
+}

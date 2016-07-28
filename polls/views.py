@@ -15,7 +15,7 @@ from django.contrib.sessions.models import Session
 from .socket import socket_redis
 from .forms import LoginForm, SignupForm
 from . import models, cache
-from .models import Question, Answer, Vote, U2URelationship, ContentImage, UserSession
+from .models import Question, Answer, Vote, U2URelationship, ContentImage, Comment, UserSession
 from .tasks import new_feed, new_follow, delete_follow
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -347,3 +347,18 @@ def socket_api(request):
         socket_redis.publish(to_session.pk, msg)
 
     return HttpResponse('')
+
+def comment(request, answer_id):
+    a = get_object_or_404(Answer, id=answer_id)
+    comments = Comment.objects.filter(from_answer=a)
+    return render(request, 'comment.html', dict(comments=comments))
+
+def new_comment(request):
+    cur_user = request.user
+    answer_id = request.POST.get('to_answer', '')
+    content = request.POST.get('content', '')
+    a = get_object_or_404(Answer, id=answer_id)
+    c = Comment(content=content, from_user=cur_user, from_answer=a)
+    c.save()
+    comments = Comment.objects.filter(from_answer=a)
+    return render(request, 'comment.html', dict(comments=comments))

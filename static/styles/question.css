@@ -88,3 +88,7 @@ body {
   right: 50px;
   top: 50px;
 }
+
+.comment-panel {
+  display: none;
+}
