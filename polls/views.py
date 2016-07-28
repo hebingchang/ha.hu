@@ -52,9 +52,9 @@ def profile(request, username):
     socket_redis.publish('data', 'data')
     cur_user = request.user
     user = get_object_or_404(User, username=username)
-    votes = Vote.objects.filter(from_user=user)
-    questions = Question.objects.filter(from_user=user)
-    answers = Answer.objects.filter(from_user=user)
+    votes = Vote.objects.filter(from_user=user)[:50]
+    questions = Question.objects.filter(from_user=user)[:50]
+    answers = Answer.objects.filter(from_user=user)[:50]
     is_superuser = cur_user.is_superuser
     relationship = None
     if cur_user != user:
@@ -293,8 +293,8 @@ def chat(request, username):
 
 
 def discover(request):
-    questions = Question.objects.all()
-    answers = Answer.objects.all()
+    questions = Question.objects.all()[:50]
+    answers = Answer.objects.all()[:50]
     return render(request, 'discover.html',
                   dict(questions=questions, answers=answers))
 
@@ -303,9 +303,9 @@ def discover(request):
 @require_POST
 def search(request):
     content = request.POST.get('search', '')
-    users = User.objects.filter(username__icontains=content)
-    questions = Question.objects.filter(Q(title__icontains=content) | Q(content__icontains=content))
-    answers = Answer.objects.filter(content__icontains=content)
+    users = User.objects.filter(username__icontains=content)[:50]
+    questions = Question.objects.filter(Q(title__icontains=content) | Q(content__icontains=content))[:50]
+    answers = Answer.objects.filter(content__icontains=content)[:50]
     return render(request, 'search.html',
                   dict(users=users, questions=questions, answers=answers))
 
@@ -360,5 +360,5 @@ def new_comment(request):
     a = get_object_or_404(Answer, id=answer_id)
     c = Comment(content=content, from_user=cur_user, from_answer=a)
     c.save()
-    comments = Comment.objects.filter(from_answer=a)
+    comments = Comment.objects.filter(from_answer=a)[:50]
     return render(request, 'comment.html', dict(comments=comments))
