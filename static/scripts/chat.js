@@ -13,7 +13,10 @@ $(function () {
   });
 
   socket.on('data', function (data) {
-    console.log(data);
+    vm.messages.push({message: data, type: 'get'});
+    setTimeout(function () {
+      $('.card').scrollTop($('.card').height());
+    }, 100);
   });
 
   $('#form-id').submit(function (e) {
@@ -28,7 +31,10 @@ $(function () {
       socket.emit('data', {
         msg: msg,
         to_user: to_user
-      })
+      });
+      setTimeout(function () {
+        $('.card').scrollTop($('.card').height());
+      }, 100);
     }
     $id_message.val(null);
     $id_message.parent().removeClass('is-dirty');

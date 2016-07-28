@@ -7,6 +7,7 @@
   width: 1024px;
   height: 80vh;
   background: rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
 }
 
 .bubble {
@@ -14,6 +15,7 @@
   width: 300px;
   padding: 15px;
   margin: 15px 10px;
+  word-break: break-all;
 }
 
 .left-message {
@@ -31,7 +33,7 @@
 }
 
 #input_box {
-  position: absolute;
+  position: fixed;
   right: 10px;
   bottom: 10px;
 }
