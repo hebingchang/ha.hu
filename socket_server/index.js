@@ -8,33 +8,39 @@ var redis = require('node-redis');
 var request = require('request');
 var cookie = require('cookie');
 
+var sockets = {}
+
 var sub = redis.createClient({
   host: '127.0.0.1',
   port: 6379,
   db: 2
 });
 
+sub.on('message', function(channel, message) {
+  console.log(channel, message);
+  if (sockets[channel]) {
+    sockets[channel].emit('data', message);
+  }
+});
+
 io.on('connection', function(socket) {
   var cookies = cookie.parse(socket.handshake.headers.cookie);
+  if (sockets[cookies.sessionid]) {
+    console.log('Existed');
+  } else {
+    console.log('New');
 
-  sub.on('message', function(channel, message) {
-    if (channel === 'data_' + cookies.sessionid) {
-      console.log(message);
-      socket.emit(message);
-    }
-  });
-
-  sub.subscribe('data_' + cookies.sessionid);
+    sockets[cookies.sessionid] = socket
+    sub.subscribe(cookies.sessionid);
+  }
 
   socket.on('data', function(data) {
+    console.log(data);
     var url = 'http://localhost:8000/socket_api/';
-
+    data.session_id = cookies.sessionid
     request.get({
       url: url,
-      qs: {
-        data: data,
-        session_id: cookies.sessionid
-      }
+      qs: data
     });
   });
 });
