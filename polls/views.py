@@ -15,7 +15,7 @@ from django.contrib.sessions.models import Session
 from .socket import socket_redis
 from .forms import LoginForm, SignupForm
 from . import models, cache
-from .models import Question, Answer, Vote, U2URelationship, ContentImage
+from .models import Question, Answer, Vote, U2URelationship, ContentImage, UserSession
 from .tasks import new_feed, new_follow, delete_follow
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -337,5 +337,13 @@ def socket_api(request):
     session_key = request.GET['session_id']
     session = Session.objects.get(pk=session_key)
     user_id = session.get_decoded()['_auth_user_id']
+
+    msg = request.GET['msg']
+
+    to_user_name = request.GET['to_user']
+    to_user = get_object_or_404(User, username=to_user_name)
+    to_session = UserSession.objects.get(user_id=to_user.id).session
+    if to_session:
+        socket_redis.publish(to_session.pk, msg)
 
     return HttpResponse('')

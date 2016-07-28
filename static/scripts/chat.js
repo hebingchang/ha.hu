@@ -12,6 +12,10 @@ $(function () {
     }
   });
 
+  socket.on('data', function (data) {
+    console.log(data);
+  });
+
   $('#form-id').submit(function (e) {
     e.preventDefault();
     var $id_message = $('#id_message');

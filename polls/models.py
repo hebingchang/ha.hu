@@ -5,6 +5,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
 from datetime import datetime
+from django.conf import settings
+from django.contrib.sessions.models import Session
+from django.contrib.auth.signals import user_logged_in
 
 from hahu.settings import CACHE_CONTENT_LENGTH
 
@@ -59,6 +62,18 @@ class Profile(models.Model):
 
     def ban(self, days=1):
         self.free_time = timezone.now() + timezone.timedelta(days=days)
+
+
+class UserSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    session = models.ForeignKey(Session)
+
+
+def user_logged_in_handler(sender, request, user, **kwargs):
+    UserSession.objects.get_or_create(user=user, session_id=request.session.session_key)
+
+
+user_logged_in.connect(user_logged_in_handler)
 
 
 def create_user(username, email, password, **kwargs):
