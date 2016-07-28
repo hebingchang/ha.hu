@@ -288,8 +288,8 @@ def deactive_user(request):
 
 
 @login_required
-def chat(request):
-    return render(request, 'chat.html', {})
+def chat(request, username):
+    return render(request, 'chat.html', dict(username=username))
 
 
 def discover(request):
@@ -333,6 +333,7 @@ def upload(request):
 
 
 def socket_api(request):
+    print(request.GET)
     session_key = request.GET['session_id']
     session = Session.objects.get(pk=session_key)
     user_id = session.get_decoded()['_auth_user_id']

@@ -14,25 +14,25 @@
 
   <div id="message-box" class="flex-center">
     <div class="mdl-card mdl-shadow--4dp card">
-      {% for message in messages %}
-        {% if from_to_user %}
+      <template v-for="message in messages">
+        <template v-if="message.type == 'get'">
           <div class="bubble-box">
             <div class="left-message bubble">
-              {{ message }}
+              $$ message.message $$
             </div>
           </div>
-        {% else %}
+        </template>
+        <template v-else>
           <div class="bubble-box">
             <div class="right-message bubble">
-              {{ message }}
+              $$ message.message $$
             </div>
           </div>
-        {% endif %}
-      {% endfor %}
+        </template>
+      </template>
 
       <div id="input_box">
-        <form action method="post">
-          {% csrf_token %}
+        <form id="form-id">
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="text" id="id_message" name="message">
             <label class="mdl-textfield__label" for="id_message">请输入消息...</label>
@@ -49,5 +49,7 @@
 {% endblock %}
 
 {% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  <script src="{% static "scripts/vue.min.js" %}"></script>
   <script src="{% static "scripts/chat.js" %}"></script>
 {% endblock %}

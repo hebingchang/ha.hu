@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^settings/$', views.settings),
     url(r'^answers/create/(?P<question_id>.*)/$', views.new_answer),
     url(r'^answers/delete/', views.delete_answer),
-    url(r'^chat/', views.chat),
+    url(r'^chat/(?P<username>.*)/$', views.chat),
     url(r'^follow/$', views.follow),
     url(r'^discover/$', views.discover),
     url(r'^search/$', views.search),
