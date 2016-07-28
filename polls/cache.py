@@ -39,12 +39,12 @@ def get_feeds(user, page_num=0):
     feeds_set_key = 'feeds_set_' + str(user.username)
     start, end = page_num * PER_PAGE_FEEDS_NUM, (page_num + 1) * PER_PAGE_FEEDS_NUM
     feed_ids = list(map(lambda k: k.decode('utf-8'), redis_server.zrange(feeds_set_key, start, end)))
-    if len(feed_ids) == 0:
-        return []
-
-    feeds_from_cache = list(
-        map(lambda f: json.loads(f.decode('utf-8')),
-            filter(lambda f: f, redis_server.mget(feed_ids))))
+    if len(feed_ids) != 0:
+        feeds_from_cache = list(
+            map(lambda f: json.loads(f.decode('utf-8')),
+                filter(lambda f: f, redis_server.mget(feed_ids))))
+    else:
+        feeds_from_cache = []
 
     hit_num = len(feeds_from_cache)
     feeds_from_disk = models.get_feeds(user, start + hit_num, end)
