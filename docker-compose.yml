@@ -2,9 +2,12 @@ version: '2'
 services:
   database:
     image: mysql:latest
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - FOREIGN_KEY_CHECKS=0
+      - MYSQL_DATABASE=hahu
     ports:
       - "3306:3306"
 
@@ -14,23 +17,51 @@ services:
       - "6379:6379"
 
   celery:
-    image: celery:latest
+    build: ./dockerfiles/celery
     environment:
       - C_FORCE_ROOT=true
+      - DJANGO_CONFIG=production
     volumes:
-      - .:/hahu
-    working_dir: /hahu
-    command: bash -c "celery --loglevel=info worker --app=hahu.celeryapp:app"
+      - .:/code
+    working_dir: /code
+    command: bash -c "sleep 10 && celery --loglevel=info worker --app=hahu.celeryapp:app"
+    depends_on:
+      - database
+      - redis
     links:
       - database
       - redis
 
+  socket:
+    build: ./socket_server
+    environment:
+      - DJANGO_CONFIG=production
+    volumes:
+      - ./socket_server:/socket
+    working_dir: /socket
+    command: bash -c "sleep 10 && node index.js"
+    ports:
+      - 4000:4000
+    depends_on:
+      - web
+      - redis
+    links:
+      - web
+      - redis
+
   web:
-    build: .
-    command: ./run.sh
+    build: ./dockerfiles/web/
+    volumes:
+      - .:/code
+    environment:
+      - DJANGO_CONFIG=production
+    working_dir: /code
+    command: bash -c "sleep 10 && python manage.py makemigrations polls && python manage.py migrate && python manage.py runserver"
     ports:
       - "8000:8000"
+    depends_on:
+      - database
+      - redis
     links:
       - database
       - redis
-      - celery
