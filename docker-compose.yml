@@ -17,7 +17,7 @@ services:
       - "6379:6379"
 
   celery:
-    build: ./dockerfiles/celery
+    build: ./celery-Dockerfile
     environment:
       - C_FORCE_ROOT=true
       - DJANGO_CONFIG=production
@@ -50,7 +50,7 @@ services:
       - redis
 
   web:
-    build: ./dockerfiles/web/
+    build: ./Dockerfile
     volumes:
       - .:/code
     environment:
