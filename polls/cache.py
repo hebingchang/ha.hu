@@ -1,7 +1,8 @@
 import redis
 import json
+from hahu.settings import REDIS_HOST
 
-redis_server = redis.Redis(db=1)
+redis_server = redis.Redis(host=REDIS_HOST, db=1)
 
 from hahu.settings import PER_PAGE_FEEDS_NUM
 
