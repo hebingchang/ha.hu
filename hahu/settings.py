@@ -138,6 +138,8 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 # redis
 
+REDIS_HOST = '127.0.0.1'
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -157,3 +159,6 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CACHE_FEEDS_NUM = 500
 CACHE_CONTENT_LENGTH = 100
 PER_PAGE_FEEDS_NUM = 50
+
+if os.getenv('DJANGO_CONFIG', '') == 'production':
+    from .settings_production import *
