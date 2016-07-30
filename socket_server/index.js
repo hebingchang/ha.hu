@@ -1,17 +1,17 @@
-var express = require('express');
-
-var app = express();
 var http = require('http');
-var server = require('http').Server(app);
+var server = http.createServer();
 var io = require('socket.io')(server);
 var redis = require('node-redis');
 var request = require('request');
 var cookie = require('cookie');
+var process = require('process');
 
-var sockets = {}
+var config = require('./config');
+
+var sockets = {};
 
 var sub = redis.createClient({
-  host: '127.0.0.1',
+  host: config.REDIS_HOST,
   port: 6379,
   db: 2
 });
@@ -38,7 +38,7 @@ io.on('connection', function(socket) {
 
   socket.on('data', function(data) {
     console.log(data);
-    var url = 'http://localhost:8000/socket_api/';
+    var url = 'http://' + config.SERVER_HOST + '/socket_api/';
     data.session_id = cookies.sessionid
     request.get({
       url: url,
