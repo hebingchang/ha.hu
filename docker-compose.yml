@@ -1,0 +1,36 @@
+version: '2'
+services:
+  database:
+    image: mysql:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - FOREIGN_KEY_CHECKS=0
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  celery:
+    image: celery:latest
+    environment:
+      - C_FORCE_ROOT=true
+    volumes:
+      - .:/hahu
+    working_dir: /hahu
+    command: bash -c "celery --loglevel=info worker --app=hahu.celeryapp:app"
+    links:
+      - database
+      - redis
+
+  web:
+    build: .
+    command: ./run.sh
+    ports:
+      - "8000:8000"
+    links:
+      - database
+      - redis
+      - celery
