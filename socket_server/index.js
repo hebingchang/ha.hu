@@ -43,6 +43,10 @@ io.on('connection', function(socket) {
     request.get({
       url: url,
       qs: data
+    }, function(err, data) {
+      if (err) {
+        console.error(err);
+      }
     });
   });
 });
