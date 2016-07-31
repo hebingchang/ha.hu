@@ -1,7 +1,7 @@
 'use strict';
 
 $(function () {
-  var socket = io(window.location.origin, { port: 4000 });
+  var socket = io(window.location.origin + ':4000/');
 
   Vue.config.delimiters = ['$$', '$$'];
   Vue.config.unsafeDelimiters = ['$$$', '$$$'];
