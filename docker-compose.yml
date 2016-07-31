@@ -3,7 +3,7 @@ services:
   database:
     image: mysql:5.7.13
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./db:/var/lib/mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - FOREIGN_KEY_CHECKS=0
