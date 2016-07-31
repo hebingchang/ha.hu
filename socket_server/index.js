@@ -17,8 +17,8 @@ var sub = redis.createClient({
 });
 
 sub.on('message', function(channel, message) {
-  message = message.toString();
   console.log(channel, message);
+  message = message.toString();
   if (sockets[channel]) {
     sockets[channel].emit('data', message);
   }
@@ -38,7 +38,7 @@ io.on('connection', function(socket) {
 
   socket.on('data', function(data) {
     console.log(data);
-    var url = 'http://' + config.SERVER_HOST + '/socket_api/';
+    var url = 'http://' + config.SERVER_HOST + ':' + config.SERVER_PORT + '/socket_api/';
     data.session_id = cookies.sessionid
     request.get({
       url: url,
