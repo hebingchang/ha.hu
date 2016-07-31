@@ -1,7 +1,7 @@
 var process = require('process');
 
 if (process.env.DJANGO_CONFIG === 'production') {
-  var SERVER_HOST = 'web';
+  var SERVER_HOST = 'nginx';
   var REDIS_HOST = 'redis';
 } else {
   var SERVER_HOST = '127.0.0.1';
