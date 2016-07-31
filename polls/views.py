@@ -345,7 +345,7 @@ def socket_api(request):
 
     to_user_name = request.GET['to_user']
     to_user = get_object_or_404(User, username=to_user_name)
-    to_session = UserSession.objects.get(user_id=to_user.id).session
+    to_session = UserSession.objects.filter(user_id=to_user.id).first().session
     if to_session:
         socket_redis.publish(to_session.pk, msg)
 
