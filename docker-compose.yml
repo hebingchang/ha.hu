@@ -4,6 +4,7 @@ services:
     image: mysql:5.7.13
     volumes:
       - ./db:/var/lib/mysql
+      - ./mysql.cnf:/etc/mysql/conf.d/mysql.cnf
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - FOREIGN_KEY_CHECKS=0
