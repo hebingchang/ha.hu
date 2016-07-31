@@ -5,3 +5,4 @@ celery
 django-redis
 django-imagekit
 pymysql
+uwsgi
