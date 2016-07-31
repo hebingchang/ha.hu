@@ -7,3 +7,5 @@ WORKDIR /code
 RUN pip install pip-tools
 RUN pip-compile requirements.in
 RUN pip install -r requirements.txt
+
+EXPOSE 8000
